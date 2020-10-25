@@ -1,21 +1,24 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FileUploader } from 'ng2-file-upload';
 
 import { ApiFrontEndService } from '../services/api-front-end.service';
+import { ApiBackEndService } from '../services/api-back-end.service';
 import { DataService } from '../services/data.service';
 import { EncrDecrService } from '../services/encdec.service';
-import * as moment from 'moment'
+import * as moment from 'moment';
+//import { resolve } from 'dns';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-bookingManager',
+  templateUrl: './bookingManager.component.html'
 })
-export class HomeComponent implements OnInit {
+
+export class BookingManagerComponent implements OnInit {
 
   publicAuth: any;
 
@@ -33,8 +36,8 @@ export class HomeComponent implements OnInit {
   }
 
   async subscribeData() {
-    this.DataService.currentStudentInfo.subscribe(data =>
-      this.publicAuth = this.EncrDecrService.decryptObject('client', data)
+    this.DataService.currentAdminInfo.subscribe(data =>
+      this.publicAuth = this.EncrDecrService.decryptObject('admin', data)
     );
     if (this.publicAuth == undefined || this.publicAuth == 'guest') {
       this.router.navigate(['/login']);

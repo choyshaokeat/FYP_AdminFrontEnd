@@ -1,24 +1,21 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { FileUploader } from 'ng2-file-upload';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ApiFrontEndService } from '../../services/api-front-end.service';
-import { ApiBackEndService } from '../../services/api-back-end.service';
-import { DataService } from '../../services/data.service';
-import { EncrDecrService } from '../../services/encdec.service';
-import * as moment from 'moment';
-//import { resolve } from 'dns';
+import { ApiFrontEndService } from '../services/api-front-end.service';
+import { DataService } from '../services/data.service';
+import { EncrDecrService } from '../services/encdec.service';
+import * as moment from 'moment'
 
 declare var $: any;
 
 @Component({
-  selector: 'app-singleBooking',
-  templateUrl: './singleBooking.component.html'
+  selector: 'app-roomAssignation',
+  templateUrl: './roomAssignation.component.html',
 })
 
-export class SingleBookingComponent implements OnInit {
+export class RoomAssignationComponent implements OnInit {
 
   publicAuth: any;
   village: any;
@@ -52,8 +49,8 @@ export class SingleBookingComponent implements OnInit {
   }
 
   async subscribeData() {
-    this.DataService.currentStudentInfo.subscribe(data =>
-      this.publicAuth = this.EncrDecrService.decryptObject('client', data)
+    this.DataService.currentAdminInfo.subscribe(data =>
+      this.publicAuth = this.EncrDecrService.decryptObject('admin', data)
     );
     console.log(this.publicAuth);
     if (this.publicAuth == undefined || this.publicAuth == 'guest') {
@@ -242,3 +239,4 @@ export class SingleBookingComponent implements OnInit {
     }
   }
 }
+

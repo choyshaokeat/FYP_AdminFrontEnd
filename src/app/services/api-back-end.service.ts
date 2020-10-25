@@ -26,48 +26,32 @@ export class ApiBackEndService {
   }
 
   // Client Info
-  registerClient(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/registerClient`, { data }, httpOptions);
-  }
-
-  registerCheck(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/registerCheck`, { data }, httpOptions);
-  }
-
   login(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/login`, { data }, httpOptions);
+    return this.http.post(`${this.getBackEndURL()}/admin/login`, { data }, httpOptions);
   }
 
-  getStudentInfo(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/getStudentInfo`, { data }, httpOptions);
+  getAdminInfo(data) {
+    return this.http.post(`${this.getBackEndURL()}/admin/getAdminInfo`, { data }, httpOptions);
   }
 
   updateStudentInfo(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/updateStudentInfo`, { data }, httpOptions);
+    return this.http.post(`${this.getBackEndURL()}/admin/updateStudentInfo`, { data }, httpOptions);
   }
 
   getBookingInfo(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/getBookingInfo`, { data }, httpOptions);
+    return this.http.post(`${this.getBackEndURL()}/admin/getBookingInfo`, { data }, httpOptions);
   }
 
   updateBookingInfo(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/updateBookingInfo`, { data }, httpOptions);
-  }
-
-  //Virtual Room
-  getVirtualRoom(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/getVirtualRoom`, { data }, httpOptions);
-  }
-  updateVirtualRoom(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/updateVirtualRoom`, { data }, httpOptions);
+    return this.http.post(`${this.getBackEndURL()}/admin/updateBookingInfo`, { data }, httpOptions);
   }
 
   //Room
   getRoomInfo(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/getRoomInfo`, { data }, httpOptions);
+    return this.http.post(`${this.getBackEndURL()}/admin/getRoomInfo`, { data }, httpOptions);
   }
 
   updateRoomInfo(data) {
-    return this.http.post(`${this.getBackEndURL()}/client/updateRoomInfo`, { data }, httpOptions);
+    return this.http.post(`${this.getBackEndURL()}/admin/updateRoomInfo`, { data }, httpOptions);
   }
 }

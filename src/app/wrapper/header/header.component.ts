@@ -15,8 +15,6 @@ declare var $: any;
 })
 export class HeaderComponent implements OnInit {
 
-  sidebarClick: any;
-  bookingHistoryCount: any;
   public publicAuth: any;
 
   constructor(
@@ -32,17 +30,14 @@ export class HeaderComponent implements OnInit {
   }
 
   async subscribeData() {
-    this.DataService.currentStudentInfo.subscribe(data =>
-      this.publicAuth = this.EncrDecrService.decryptObject('client', data)
+    this.DataService.currentAdminInfo.subscribe(data =>
+      this.publicAuth = this.EncrDecrService.decryptObject('admin', data)
     );
+    console.log(this.publicAuth);
     if (this.publicAuth == undefined || this.publicAuth == 'guest') {
       this.router.navigate(['/login']);
     } else {
       this.DataService.callAll();
-      this.DataService.currentHistoryCount.subscribe(
-        async data => {
-          this.bookingHistoryCount = data;
-        });
     }
   }
 

@@ -15,6 +15,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { FileUploadModule  } from 'ng2-file-upload';
 import { CountdownModule } from 'ngx-countdown';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
@@ -67,6 +68,7 @@ export function provideConfig() {
     FileUploadModule,
     CountdownModule,
     ZXingScannerModule,
+    NgApexchartsModule,
     SocialLoginModule,
     NgxViewerModule,
     FlatpickrModule.forRoot(),

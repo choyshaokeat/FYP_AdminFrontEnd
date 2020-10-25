@@ -45,16 +45,10 @@ export class DataService {
       try {
         //console.log('callAll');
         //await this.socketIO('listen', undefined);
-        var data = await this.API.getStudentInfo(this.publicAuth);
+        var data = await this.API.getAdminInfo(this.publicAuth);
         //console.log(data);
-        this.updateStudentInfo(await this.EncrDecrService.encryptObject('client', data[0]));
+        this.updateAdminInfo(await this.EncrDecrService.encryptObject('admin', data[0]));
         this.updateBookingHistory(await this.API.getBookingInfo(data = { studentID: this.publicAuth.studentID, type: "bookingHistory" }));
-        this.updateVRInfo(await this.API.getVirtualRoom(data = { vrCode: this.publicAuth.vrCode, type: "vrInfo" }));
-        this.updateHistoryCount(await this.checkBookingHistoryCount());
-        var i = await this.checkBookingHistoryCount();
-        if (i > 0) {
-          this.updateRoommate(await this.getRoommate());
-        }
         resolve('ok');
       }
       catch (err) {
@@ -68,16 +62,10 @@ export class DataService {
     return new Promise<any>(async (resolve, reject) => {
       try {
         if (module == "info") {
-          var data = await this.API.getStudentInfo(this.publicAuth);
+          var data = await this.API.getAdminInfo(this.publicAuth);
           //console.log(data);
-          this.updateStudentInfo(await this.EncrDecrService.encryptObject('client', data[0]));
+          this.updateAdminInfo(await this.EncrDecrService.encryptObject('admin', data[0]));
           this.updateBookingHistory(await this.API.getBookingInfo(data = { studentID: this.publicAuth.studentID, type: "bookingHistory" }));
-          this.updateVRInfo(await this.API.getVirtualRoom(data = { vrCode: this.publicAuth.vrCode, type: "vrInfo" }));
-          this.updateHistoryCount(await this.checkBookingHistoryCount());
-          var i = await this.checkBookingHistoryCount();
-          if (i > 0) {
-            this.updateRoommate(await this.getRoommate());
-          }
         }
         resolve('ok');
       }
@@ -120,18 +108,18 @@ export class DataService {
   // Service Aunthenticator
   public publicAuth: any;
 
-  // Client Info
-  private studentInfo = new BehaviorSubject('');
-  currentStudentInfo = this.studentInfo.asObservable();
-  updateStudentInfo(value) {
-    this.studentInfo.next(value);
-    this.publicAuth = this.EncrDecrService.decryptObject('client', value);
+  // Admin Info
+  private adminInfo = new BehaviorSubject('');
+  currentAdminInfo = this.adminInfo.asObservable();
+  updateAdminInfo(value) {
+    this.adminInfo.next(value);
+    this.publicAuth = this.EncrDecrService.decryptObject('admin', value);
     localStorage.setItem('auth', value);
     //console.log(this.publicAuth);
   }
 
   public reset() {
-    this.updateStudentInfo(this.EncrDecrService.encryptObject('client', 'guest'));
+    this.updateAdminInfo(this.EncrDecrService.encryptObject('admin', 'guest'));
     localStorage.clear();
     sessionStorage.clear();
   }
@@ -148,29 +136,6 @@ export class DataService {
   currentRoommate = this.roommate.asObservable();
   updateRoommate(value) {
     this.roommate.next(value);
-    //console.log(value);
-  }
-
-  //Virtual Room
-  private vrInfo = new BehaviorSubject('');
-  currentVRInfo = this.vrInfo.asObservable();
-  updateVRInfo(value) {
-    this.vrInfo.next(value);
-    //console.log(value);
-  }
-
-  //header
-  private headerShown = new BehaviorSubject([]);
-  currentHeaderShown = this.headerShown.asObservable();
-  updateHeaderShown(value) {
-    this.headerShown.next(value);
-    //console.log(value);
-  }
-
-  private historyCount = new BehaviorSubject([]);
-  currentHistoryCount = this.historyCount.asObservable();
-  updateHistoryCount(value) {
-    this.historyCount.next(value);
     //console.log(value);
   }
 }

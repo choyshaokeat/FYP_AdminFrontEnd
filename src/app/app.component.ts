@@ -31,8 +31,8 @@ export class AppComponent implements OnInit {
   }
 
   async subscribeData() {
-    this.DataService.currentStudentInfo.subscribe(data =>
-      this.publicAuth = this.EncrDecrService.decryptObject('client', data)
+    this.DataService.currentAdminInfo.subscribe(data =>
+      this.publicAuth = this.EncrDecrService.decryptObject('admin', data)
     );
     if (this.publicAuth == undefined || this.publicAuth == 'guest') {
       this.loginStatus = false;
@@ -46,11 +46,11 @@ export class AppComponent implements OnInit {
     if (auth != undefined) {
       // let loginResponse;
       // console.log(auth);
-      // console.log(this.EncrDecrService.decryptObject('client',auth));
-      this.DataService.updateStudentInfo(auth);
+      // console.log(this.EncrDecrService.decryptObject('admin',auth));
+      this.DataService.updateAdminInfo(auth);
       try {
-        var res = await this.API.login(this.EncrDecrService.decryptObject('client', auth));
-        this.DataService.updateStudentInfo(auth);
+        var res = await this.API.login(this.EncrDecrService.decryptObject('admin', auth));
+        this.DataService.updateAdminInfo(auth);
         //console.log(res)
       }
       catch (err) {
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
       }
 
     } else {
-      this.DataService.updateStudentInfo(this.EncrDecrService.encryptObject('client', 'guest'));
+      this.DataService.updateAdminInfo(this.EncrDecrService.encryptObject('admin', 'guest'));
     }
   }
 

@@ -1,5 +1,5 @@
 <header class="fixed-top">
-    <nav class="navbar navbar-horizontal navbar-expand-lg navbar-dark shadow shadow-lg bg-brown py-3 px-5">
+    <nav class="navbar navbar-horizontal navbar-expand-lg navbar-dark shadow shadow-lg bg-primary py-3 px-5">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-primary"
                 aria-controls="navbar-primary" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,41 +7,49 @@
             </button>
             <div class="collapse navbar-collapse d-flex" id="navbar-primary">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item mr-4 font-weight-bold">
-                        <a href="javascript:void(0)" class="text-white h6" [routerLink]="['/home']">
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <li *ngIf="bookingHistoryCount > 0" class="nav-item mr-4 font-weight-bold">
-                        <a href="javascript:void(0)" class="text-white h6" [routerLink]="['/history']">
-                            <span>History</span>
-                        </a>
-                    </li>
-                    <li *ngIf="publicAuth.bookingStatus == 1" class="nav-item mr-4 font-weight-bold">
-                        <a href="javascript:void(0)" class="text-white h6" [routerLink]="['/virtualRoom']">
-                            <span>Virtual Room</span>
-                        </a>
-                    </li>
-                    <li class="nav-item mr-4 font-weight-bold">
-                        <a href="javascript:void(0)" class="text-white h6" [routerLink]="['/floorPlan']">
-                            <span>Floor Plan</span>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" [routerLink]="['/dashboard']">
+                            <span class="h6 text-white">
+                                Dashboard
+                            </span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-sm btn-soft-secondary text-primary rounded-pill my-auto font-weight-bold"
-                            [disabled]="publicAuth.bookingStatus > 0" (click)="modalEvent('modalBook')">Book now</button>
+                        <a class="nav-link" href="javascript:void(0)" [routerLink]="['/roomManager']">
+                            <span class="h6 text-white">
+                                Room Details
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown dropdown-animate">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="h6 text-white">
+                                Manager
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-sm px-0 mt-2">
+                            <a class="dropdown-item text-sm px-4" href="javascript:void(0)" [routerLink]="['/roomAssignation']">
+                                <i class="fas fa-user-tie text-primary"></i>Room Assignation
+                            </a>
+                            <a class="dropdown-item text-sm px-4" href="javascript:void(0)" [routerLink]="['/bookingManager']">
+                                <i class="fas fa-bookmark text-primary"></i>Booking Manager
+                            </a>
+                            <a class="dropdown-item text-sm px-4" href="javascript:void(0)" [routerLink]="['/keyCollection']">
+                                <i class="fas fa-key text-primary"></i>Key Manager
+                            </a>
+                        </div>
                     </li>
                 </ul>
-                <ul class="navbar-nav ml-lg-auto d-none d-lg-flex">
+                <ul class="navbar-nav ml-lg-auto align-items-center">
+                    <li class="nav-item mr-0">
+                        <span class="badge badge-sm badge-soft-primary">
+                            Admin
+                        </span>
+                    </li>
                     <li class="nav-item dropdown dropdown-animate">
-                        <a class="nav-link text-dark pr-lg-0 py-0 hover-translate-y-n3" href="javascript.void(0)"
+                        <a class="nav-link text-dark pr-lg-0 py-0 lh-100 hover-translate-y-n3" href="javascript.void(0)"
                             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <div class="media media-pill align-items-center py-0">
-                                <div class="ml-2 d-none d-block">
-                                    <span
-                                        class="mb-0 text-white h6 font-weight-bold dropdown-toggle">{{ publicAuth.studentName }}</span>
-                                </div>
-                            </div>
+                            <span class="mb-0 text-white h6 font-weight-bold dropdown-toggle">{{ publicAuth.adminName }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right px-0 mt-2">
                             <h6 class="dropdown-header px-4">User menu</h6>
@@ -49,7 +57,7 @@
                                 <i class="fas fa-envelope text-primary"></i>Notifications
                             </a>
                             <a class="dropdown-item text-sm px-4" href="javascript:void(0)"
-                                [routerLink]="['/settings']">
+                                [routerLink]="['/setting']">
                                 <i class="fas fa-cog text-primary"></i>Settings
                             </a>
                             <div class="dropdown-divider" role="presentation"></div>
@@ -65,33 +73,3 @@
 </header>
 
 <!-- Modal -->
-<div class="modal bg-translucent-dark fade" id="modalBook" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div>
-                    <h6 class="modal-title text-center mb-4" id="myLargeModalLabel">Please select a booking option to
-                        proceed.</h6>
-                    <div class="card-group text-center">
-                        <div class="card bg-gradient-primary p-3 border-0 shadow-primary">
-                            <a href="javascript:void(0)" class="hover-translate-y-n3" [routerLink]="['/singleBooking']"
-                                data-dismiss="modal" aria-label="Close">
-                                <div class="card-body">
-                                    <h5 class="h4 text-white m-0">Book individually</h5>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="card bg-gradient-dark p-3 border-0 shadow-primary">
-                            <a href="javascript:void(0)" class="hover-translate-y-n3" [routerLink]="['/bulkBooking']"
-                                data-dismiss="modal" aria-label="Close">
-                                <div class="card-body">
-                                    <h5 class="h4 text-white m-0">Book with friends</h5>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

@@ -19,11 +19,11 @@ export class LoginComponent implements OnInit {
   @Output() closeModal: EventEmitter<any> = new EventEmitter();
 
   form = this.fb.group({
-    studentEmail: ['', [
+    adminEmail: ['', [
       Validators.required,
       //Validators.email,
     ]],
-    studentPW: ['', [
+    adminPW: ['', [
       Validators.required,
       //Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
       //Validators.minLength(8),
@@ -63,19 +63,19 @@ export class LoginComponent implements OnInit {
       var res = await this.API.login(this.form.value);
       console.log(res)
       var data = {
-        studentID: res[0].studentID,
-        studentPW: res[0].studentPW,
-        studentName: res[0].studentName,
-        studentEmail: res[0].studentEmail,
-        studentContact: res[0].studentContact,
-        studentAddress: res[0].studentAddress,
+        adminID: res[0].adminID,
+        adminPW: res[0].adminPW,
+        adminName: res[0].adminName,
+        adminEmail: res[0].adminEmail,
+        adminContact: res[0].adminContact,
       };
-      var auth = this.EncrDecrService.encryptObject('client', data);
+      var auth = this.EncrDecrService.encryptObject('admin', data);
+      console.log(auth);
       localStorage.setItem('auth', auth);
-      this.DataService.updateStudentInfo(auth);
+      this.DataService.updateAdminInfo(auth);
       await this.DataService.callAll();
       this.spinner.hide();
-      this.router.navigate(['/home']);
+      this.router.navigate(['/dashboard']);
     }
     catch (err) {
       console.error(err);
@@ -85,7 +85,6 @@ export class LoginComponent implements OnInit {
 
   }
 
-
   // Social Login
   signOut(): void {
     this.authService.signOut();
@@ -93,9 +92,5 @@ export class LoginComponent implements OnInit {
 
   showPassword() {
     this.showPassword_boolean = !this.showPassword_boolean;
-  }
-
-  register() {
-    this.router.navigate(['register'])
   }
 }

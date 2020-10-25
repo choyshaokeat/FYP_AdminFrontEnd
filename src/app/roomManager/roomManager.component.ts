@@ -11,15 +11,12 @@ import * as moment from 'moment'
 declare var $: any;
 
 @Component({
-  selector: 'app-history',
-  templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+  selector: 'app-roomManager',
+  templateUrl: './roomManager.component.html',
 })
-export class HistoryComponent implements OnInit {
+export class RoomManagerComponent implements OnInit {
 
   publicAuth: any;
-  bookingHistory: any;
-  roommates: any;
 
   constructor(
     private API: ApiFrontEndService,
@@ -35,21 +32,11 @@ export class HistoryComponent implements OnInit {
   }
 
   async subscribeData() {
-    this.DataService.currentStudentInfo.subscribe(data =>
-      this.publicAuth = this.EncrDecrService.decryptObject('client', data)
+    this.DataService.currentAdminInfo.subscribe(data =>
+      this.publicAuth = this.EncrDecrService.decryptObject('admin', data)
     );
     if (this.publicAuth == undefined || this.publicAuth == 'guest') {
       this.router.navigate(['/login']);
-    } else {
-      this.DataService.currentBookingHistory.subscribe(
-        async data => {
-          this.bookingHistory = data;
-        });
-      this.DataService.currentRoommate.subscribe(
-        async data => {
-          this.roommates = data;
-        });
     }
   }
-
 }

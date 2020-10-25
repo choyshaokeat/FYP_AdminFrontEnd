@@ -33,7 +33,7 @@
             ],
             "scripts": [
               "src/assets/js/purpose.core.js",
-              "src/assets/libs/apexcharts/dist/apexcharts.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js",
               "src/assets/js/purpose.js",
               "src/assets/libs/swiper/dist/js/swiper.min.js"
             ]
@@ -113,7 +113,7 @@
             "scripts": [
               "src/assets/js/purpose.core.js",
               "src/assets/libs/progressbar.js/dist/progressbar.min.js",
-              "src/assets/libs/apexcharts/dist/apexcharts.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js",
               "src/assets/libs/moment/min/moment.min.js",
               "src/assets/libs/fullcalendar/dist/fullcalendar.min.js",
               "src/assets/js/purpose.js",

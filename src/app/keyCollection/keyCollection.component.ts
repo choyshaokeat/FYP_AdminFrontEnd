@@ -11,10 +11,10 @@ import * as moment from 'moment'
 declare var $: any;
 
 @Component({
-  selector: 'app-floorPlan',
-  templateUrl: './floorPlan.component.html',
+  selector: 'app-keyCollection',
+  templateUrl: './keyCollection.component.html',
 })
-export class FloorPlanComponent implements OnInit {
+export class KeyCollectionComponent implements OnInit {
 
   publicAuth: any;
 
@@ -32,17 +32,11 @@ export class FloorPlanComponent implements OnInit {
   }
 
   async subscribeData() {
-    this.DataService.currentStudentInfo.subscribe(data =>
-      this.publicAuth = this.EncrDecrService.decryptObject('client', data)
+    this.DataService.currentAdminInfo.subscribe(data =>
+      this.publicAuth = this.EncrDecrService.decryptObject('admin', data)
     );
     if (this.publicAuth == undefined || this.publicAuth == 'guest') {
       this.router.navigate(['/login']);
     }
   }
-
-  topFunction() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  }
-
 }

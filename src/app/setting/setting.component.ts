@@ -12,10 +12,10 @@ import { EncrDecrService } from '../services/encdec.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-accountSettings',
-  templateUrl: './accountSettings.component.html'
+  selector: 'app-setting',
+  templateUrl: './setting.component.html'
 })
-export class AccountSettingsComponent implements OnInit {
+export class SettingComponent implements OnInit {
 
   merchant_profile: any;
   cities: any;
@@ -73,9 +73,9 @@ export class AccountSettingsComponent implements OnInit {
 
 
   subscribeData() {
-    this.DataService.currentStudentInfo.subscribe(
+    this.DataService.currentAdminInfo.subscribe(
       data => {
-        var studentInfo = this.EncrDecrService.decryptObject('client', data);
+        var studentInfo = this.EncrDecrService.decryptObject('admin', data);
         this.studentName = studentInfo.studentName;
         this.studentEmail = studentInfo.studentEmail;
         this.studentContact = studentInfo.studentContact;

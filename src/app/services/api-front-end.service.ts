@@ -14,44 +14,6 @@ export class ApiFrontEndService {
   ) { }
 
   // Client Info
-  public registerClient(user) {
-    return new Promise((resolve, reject) => {
-      user = this.EncrDecrService.encryptObject('client', user);
-      this.ApiBackEndService.registerClient(user).subscribe(
-        (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
-          if (res.status == 200) {
-            if (res.data.length != 0) resolve(res.data)
-            else if (res.data.length == 0) reject('Empty data');
-          }
-          else reject(res.status);
-        },
-        (err) => {
-          reject(err)
-        }
-      );
-    });
-  }
-
-  public registerCheck(data) {
-    return new Promise((resolve, reject) => {
-      data = this.EncrDecrService.encryptObject('client', data);
-      this.ApiBackEndService.registerCheck(data).subscribe(
-        (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
-          if (res.status == 200) {
-            if (res.data.length != 0) resolve(res.data)
-            else if (res.data.length == 0) reject('Empty data');
-          }
-          else reject(res.status);
-        },
-        (err) => {
-          reject(err)
-        }
-      );
-    });
-  }
-
   public login(user) {
     return new Promise((resolve, reject) => {
       user = this.EncrDecrService.encryptObject('login', user);
@@ -71,12 +33,12 @@ export class ApiFrontEndService {
     });
   }
 
-  public getStudentInfo(user) {
+  public getAdminInfo(user) {
     return new Promise((resolve, reject) => {
-      user = this.EncrDecrService.encryptObject('client', user);
-      this.ApiBackEndService.getStudentInfo(user).subscribe(
+      user = this.EncrDecrService.encryptObject('admin', user);
+      this.ApiBackEndService.getAdminInfo(user).subscribe(
         (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
+          res = this.EncrDecrService.decryptObject('admin', res);
           if (res.status == 200) {
             resolve(res.data);
           }
@@ -91,10 +53,10 @@ export class ApiFrontEndService {
 
   public updateStudentInfo(user) {
     return new Promise((resolve, reject) => {
-      user = this.EncrDecrService.encryptObject('client', user);
+      user = this.EncrDecrService.encryptObject('admin', user);
       this.ApiBackEndService.updateStudentInfo(user).subscribe(
         (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
+          res = this.EncrDecrService.decryptObject('admin', res);
           if (res.status == 200) {
             if (res.data.length != 0) resolve(res.data)
             else if (res.data.length == 0) reject('Empty data');
@@ -110,10 +72,10 @@ export class ApiFrontEndService {
 
   public getBookingInfo(data) {
     return new Promise((resolve, reject) => {
-      data = this.EncrDecrService.encryptObject('client', data);
+      data = this.EncrDecrService.encryptObject('admin', data);
       this.ApiBackEndService.getBookingInfo(data).subscribe(
         (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
+          res = this.EncrDecrService.decryptObject('admin', res);
           if (res.status == 200) {
             resolve(res.data)
           }
@@ -128,49 +90,12 @@ export class ApiFrontEndService {
 
   public updateBookingInfo(data) {
     return new Promise((resolve, reject) => {
-      data = this.EncrDecrService.encryptObject('client', data);
+      data = this.EncrDecrService.encryptObject('admin', data);
       this.ApiBackEndService.updateBookingInfo(data).subscribe(
         (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
+          res = this.EncrDecrService.decryptObject('admin', res);
           if (res.status == 200) {
             resolve(res.data)
-          }
-          else reject(res.status);
-        },
-        (err) => {
-          reject(err)
-        }
-      );
-    });
-  }
-
-  public getVirtualRoom(data) {
-    return new Promise((resolve, reject) => {
-      data = this.EncrDecrService.encryptObject('client', data);
-      this.ApiBackEndService.getVirtualRoom(data).subscribe(
-        (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
-          if (res.status == 200) {
-            resolve(res.data)
-          }
-          else reject(res.status);
-        },
-        (err) => {
-          reject(err)
-        }
-      );
-    });
-  }
-
-  public updateVirtualRoom(data) {
-    return new Promise((resolve, reject) => {
-      data = this.EncrDecrService.encryptObject('client', data);
-      this.ApiBackEndService.updateVirtualRoom(data).subscribe(
-        (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
-          if (res.status == 200) {
-            if (res.data.length != 0) resolve(res.data)
-            else if (res.data.length == 0) reject('Empty data');
           }
           else reject(res.status);
         },
@@ -183,10 +108,10 @@ export class ApiFrontEndService {
 
   public getRoomInfo(data) {
     return new Promise((resolve, reject) => {
-      data = this.EncrDecrService.encryptObject('client', data);
+      data = this.EncrDecrService.encryptObject('admin', data);
       this.ApiBackEndService.getRoomInfo(data).subscribe(
         (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
+          res = this.EncrDecrService.decryptObject('admin', res);
           if (res.status == 200) {
             resolve(res.data)
           }
@@ -201,10 +126,10 @@ export class ApiFrontEndService {
 
   public updateRoomInfo(data) {
     return new Promise((resolve, reject) => {
-      data = this.EncrDecrService.encryptObject('client', data);
+      data = this.EncrDecrService.encryptObject('admin', data);
       this.ApiBackEndService.updateRoomInfo(data).subscribe(
         (res: { status, data }) => {
-          res = this.EncrDecrService.decryptObject('client', res);
+          res = this.EncrDecrService.decryptObject('admin', res);
           if (res.status == 200) {
             resolve(res.data)
           }
