@@ -1,28 +1,412 @@
 <app-header></app-header>
-<div class="main-content">
-  <!-- MD and Below -->
-  <section id='section_1' class="">
-    <div class="container-fluid pb-5 vh-100 bg-brown d-flex align-items-center position-relative zindex-100 py-10">
-      <div class="container">
-        <div class="col">
-          <div class="row">
-            <div class="col-6 align-self-center">
-              <h1 class="font-weight-900 text-white mb-4 display-3" style="text-shadow: 0px 0px 6px #7e6a58;">Roomy</h1>
-              <p class="lead lh-180 text-white font-weight-bold" style="text-shadow: 0px 0px 4px #7e6a58;">Roomy is an <br>
-                <span class="text-dark" style="text-shadow: 0px 0px 0px #7e6a58;">Automated Student Accommodation Booking System</span>
-                <br>that takes room booking to the next level.</p>
-            </div>
-            <div class="col-6 ml-lg-auto align-self-end">
-              <div class="position-relative" style="z-index: 10;">
-                <img alt="Image placeholder" src="assets/img/1554481096-visuel-header-messenger2.png"
-                  class="img-fluid img-center">
-              </div>
-            </div>
+<div class="container-fluid bg-white d-block mt-7 px-5">
+  <div class="row">
+    <div class="col-3">
+      <div class="div" style="position: -webkit-sticky; position: sticky; top: 6rem;">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="font-weight-bold m-0"><i class="fas fa-check-circle mr-2"></i>Room Details</h5>
+            <a href="javascript:void(0)" (click)="getAllRoomData()">Show all</a>
+          </div>
+          <div class="card-body">
+            <h6 class="mb-2 mt-2">Filter village:</h6>
+            <nav class="nav nav-pills nav-pills-icon nav-justified font-weight-bold pb-2">
+              <a *ngFor="let m of village" class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)"
+                role="tab" (click)="setVillage(m.village)" aria-selected="true">V{{ m.village }}</a>
+            </nav>
+            <h6 class="mb-2 mt-4">Filter gender:</h6>
+            <nav class="nav nav-pills nav-pills-icon nav-justified font-weight-bold pb-2">
+              <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
+                (click)="setGender('Male')" aria-selected="true">Male</a>
+              <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
+                (click)="setGender('Female')" aria-selected="true">Female</a>
+            </nav>
+            <h6 class="mb-2 mt-4">Filter capacity:</h6>
+            <nav class="nav nav-pills nav-pills-icon nav-justified font-weight-bold pb-3">
+              <a *ngFor="let m of capacity" class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)"
+                role="tab" (click)="setCapacity(m.capacity)" aria-selected="true">{{ m.capacity }} Pax</a>
+            </nav>
+          </div>
+          <div class="card-footer px-0 py-0 border-0 overflow-hidden">
+            <button class="btn btn-block btn-primary rounded-0" (click)="getRoomData()"
+              [disabled]="villageSelected.length == 0 || capacitySelected.length == 0 || genderSelected.length == 0">Filter</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn-success btn-block" (click)="modalEvent('addRoomModal')">
+          <i class="fas fa-plus mr-2"></i>Add Room
+        </button>
+      </div>
+    </div>
+    <div class="col-9">
+      <div *ngIf="allRoomData.length != 0" class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered rounded">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">Room</th>
+                  <th scope="col">Building</th>
+                  <th scope="col">Level</th>
+                  <th scope="col">Bed</th>
+                  <th scope="col">Aircond</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Capacity</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of allRoomData" class="text-center">
+                  <th scope="row">{{ m.roomNumber }}</th>
+                  <td>{{ m.block }}</td>
+                  <td>{{ m.level }}</td>
+                  <td>{{ m.bed }}</td>
+                  <td>{{ m.aircond }}</td>
+                  <td>RM {{ m.price | number:'.2' }}</td>
+                  <td>{{ m.capacity }} pax</td>
+                  <td>
+                    <span *ngIf="m.status == 0" class="badge badge-soft-success">
+                      Available
+                    </span>
+                    <span *ngIf="m.status == 1" class="badge badge-soft-danger">
+                      Occupied
+                    </span>
+                    <span *ngIf="m.status == 2" class="badge badge-soft-warning">
+                      Renovating
+                    </span>
+                    <span *ngIf="m.status == 3" class="badge badge-soft-dark">
+                      Unavailable
+                    </span>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-sm btn-outline-primary py-1"
+                      (click)="fillFormData(m)">
+                      EDIT
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="allRoomData.length == 0" class="card">
+        <div class="card-body">
+          <div class="text-center align-items-center py-5">
+            <h4>Opps. Room not found...</h4>
+            <p>Please select other filtering options.</p>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="addRoomModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-success" role="document">
+    <div class="modal-content">
+      <form [formGroup]="addRoomForm" (ngSubmit)="addRoom()">
+        <div class="modal-header d-flex align-items-center">
+          <div class="modal-title">
+            <div>
+              <h6 class="mb-0 text-white"><i class="fas fa-plus mr-2"></i>Add Room</h6>
+            </div>
+          </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Room Number</label>
+                <input class="form-control" formControlName="roomNumber" type="text">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Village</label>
+                <input class="form-control" formControlName="village" type="number">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Building</label>
+                <input class="form-control" formControlName="building" type="text">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Level</label>
+                <input class="form-control" formControlName="level" type="text">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Bed</label>
+                <input class="form-control" formControlName="bed" type="text">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Capacity</label>
+                <input class="form-control" formControlName="capacity" type="number">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-control-label text-white">Price(RM)</label>
+                <input class="form-control" formControlName="price" type="number">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-5">
+              <label class="form-control-label text-white">Aircond</label>
+              <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary active" (click)="setRadioButtonValue('aircond', 'Yes')">
+                  <input type="radio" autocomplete="off" value="Yes" formControlName="aircond" checked> Yes
+                </label>
+                <label class="btn btn-secondary" (click)="setRadioButtonValue('aircond', 'No')">
+                  <input type="radio" autocomplete="off" value="No" formControlName="aircond"> No
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <label class="form-control-label text-white">Gender</label>
+              <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary active" (click)="setRadioButtonValue('gender', 'Male')">
+                  <input type="radio" autocomplete="off" value="Male" formControlName="gender" checked> Male
+                </label>
+                <label class="btn btn-secondary" (click)="setRadioButtonValue('gender', 'Female')">
+                  <input type="radio" autocomplete="off" value="Female" formControlName="gender"> Female
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="form-control-label text-white">Status</label>
+              <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary active" (click)="setRadioButtonValue('status', '0')">
+                  <input type="radio" autocomplete="off" value="Male" formControlName="status" checked> Available
+                </label>
+                <label class="btn btn-secondary" (click)="setRadioButtonValue('status', '2')">
+                  <input type="radio" autocomplete="off" value="Female" formControlName="status"> Renovating
+                </label>
+                <label class="btn btn-secondary" (click)="setRadioButtonValue('status', '3')">
+                  <input type="radio" autocomplete="off" value="Female" formControlName="status"> Unavailable
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer pr-4 mr-1">
+          <button type="submit" class="btn btn-secondary btn-block" [disabled]="addRoomForm.invalid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal modal-danger bg-translucent-dark fade" id="roomAlreadyAvailableModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="h4" aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="text-center text-white my-4"><i class="fas fa-info-circle fa-4x"></i></h5>
+        <h5 class="modal-title text-center mb-4" id="myLargeModalLabel">Opps, the room is already created in our database.</h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal modal-success bg-translucent-dark fade" id="addRoomSucessfullyModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="h4" aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="text-center text-white my-4"><i class="fas fa-check-circle fa-4x"></i></h5>
+        <h5 class="modal-title text-center mb-4" id="myLargeModalLabel">Awesome, new room created!</h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editRoomModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-primary" role="document">
+    <div class="modal-content">
+      <form [formGroup]="editRoomForm" (ngSubmit)="editRoom()">
+        <div class="modal-header d-flex align-items-center">
+          <div class="modal-title">
+            <div>
+              <h6 class="mb-0 text-white"><i class="fas fa-plus mr-2"></i>Edit Room Information</h6>
+            </div>
+          </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Room Number</label>
+                <input class="form-control" formControlName="roomNumber" type="text" disabled>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Village</label>
+                <input class="form-control" formControlName="village" type="number" disabled>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Building</label>
+                <input class="form-control" formControlName="building" type="text" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Level</label>
+                <input class="form-control" formControlName="level" type="text" disabled>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Bed</label>
+                <input class="form-control" formControlName="bed" type="text" disabled>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="form-control-label text-white">Capacity</label>
+                <input class="form-control" formControlName="capacity" type="number" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="form-control-label text-white">Price(RM)</label>
+                <input class="form-control" formControlName="price" type="number">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-5">
+              <label class="form-control-label text-white">Aircond</label>
+              <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary" (click)="editRadioButtonValue('aircond', 'Yes')" [ngClass]="{'active': editRoomForm.value.aircond == 'Yes'}">
+                  <input type="radio" autocomplete="off" value="Yes" formControlName="aircond"> Yes
+                </label>
+                <label class="btn btn-secondary" (click)="editRadioButtonValue('aircond', 'No')" [ngClass]="{'active': editRoomForm.value.aircond == 'No'}">
+                  <input type="radio" autocomplete="off" value="No" formControlName="aircond"> No
+                </label>
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <label class="form-control-label text-white">Gender</label>
+              <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary" (click)="editRadioButtonValue('gender', 'Male')" [ngClass]="{'active': editRoomForm.value.gender == 'Male'}">
+                  <input type="radio" autocomplete="off" value="Male" formControlName="gender"> Male
+                </label>
+                <label class="btn btn-secondary" (click)="editRadioButtonValue('gender', 'Female')" [ngClass]="{'active': editRoomForm.value.gender == 'Female'}">
+                  <input type="radio" autocomplete="off" value="Female" formControlName="gender"> Female
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div *ngIf="editRoomForm.value.status != '1'" class="col-sm-12">
+              <label class="form-control-label text-white">Status</label>
+              <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <label class="btn btn-secondary" (click)="editRadioButtonValue('status', '0')" [ngClass]="{'active': editRoomForm.value.status == '0'}">
+                  <input type="radio" autocomplete="off" value="Male" formControlName="status"> Available
+                </label>
+                <label class="btn btn-secondary" (click)="editRadioButtonValue('status', '2')" [ngClass]="{'active': editRoomForm.value.status == '2'}">
+                  <input type="radio" autocomplete="off" value="Female" formControlName="status"> Renovating
+                </label>
+                <label class="btn btn-secondary" (click)="editRadioButtonValue('status', '3')" [ngClass]="{'active': editRoomForm.value.status == '3'}">
+                  <input type="radio" autocomplete="off" value="Female" formControlName="status"> Unavailable
+                </label>
+              </div>
+            </div>
+            <div *ngIf="editRoomForm.value.status == '1'" class="col-sm-12">
+              <label class="form-control-label text-white">Status (Unable to edit because the room is occupied atm)</label>
+              <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
+                <button class="btn btn-secondary" disabled>
+                  <input type="radio" autocomplete="off" value="Male" formControlName="status"> Available
+                </button>
+                <button class="btn btn-secondary" disabled>
+                  <input type="radio" autocomplete="off" value="Female" formControlName="status"> Renovating
+                </button>
+                <button class="btn btn-secondary" disabled>
+                  <input type="radio" autocomplete="off" value="Female" formControlName="status"> Unavailable
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer pr-4 mr-1">
+          <button type="submit" class="btn btn-secondary btn-block" [disabled]="editRoomForm.invalid">Submit</button>
+          <button type="button" class="btn btn-soft-danger btn-block" [disabled]="editRoomForm.value.status == '1'" (click)="modalEvent('deleteRoom')">Delete Room</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal modal-success bg-translucent-dark fade" id="editRoomSucessfullyModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="h4" aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="text-center text-white my-4"><i class="fas fa-check-circle fa-4x"></i></h5>
+        <h5 class="modal-title text-center mb-4" id="myLargeModalLabel">Awesome, room details updated!</h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal modal-success bg-translucent-dark fade" id="deleteRoomSucessfullyModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="h4" aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="text-center text-white my-4"><i class="fas fa-trash-alt fa-4x"></i></h5>
+        <h5 class="modal-title text-center mb-4" id="myLargeModalLabel">Room successfully deleted!</h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal bg-translucent-dark fade" id="modalDeleteRoom" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div>
+          <h5 class="modal-title text-center mb-2" id="myLargeModalLabel">Room Deletion</h5>
+          <p class="text-center mb-4 text-sm lh-140">Are you sure to proceed with room deletion?</p>
+          <button type="button" class="btn btn-block btn-animated btn-danger btn-animated-x" (click)="deleteRoom()">
+            <span class="btn-inner--visible">Delete Now</span>
+            <span class="btn-inner--hidden">
+              <i class="fas fa-trash-alt"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
