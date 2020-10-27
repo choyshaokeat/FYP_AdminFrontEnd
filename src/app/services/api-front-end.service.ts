@@ -51,6 +51,24 @@ export class ApiFrontEndService {
     });
   }
 
+  public getStudentInfo(user) {
+    return new Promise((resolve, reject) => {
+      user = this.EncrDecrService.encryptObject('admin', user);
+      this.ApiBackEndService.getStudentInfo(user).subscribe(
+        (res: { status, data }) => {
+          res = this.EncrDecrService.decryptObject('admin', res);
+          if (res.status == 200) {
+            resolve(res.data);
+          }
+          else reject(res.status);
+        },
+        (err) => {
+          reject(err)
+        }
+      );
+    });
+  }
+
   public updateStudentInfo(user) {
     return new Promise((resolve, reject) => {
       user = this.EncrDecrService.encryptObject('admin', user);

@@ -34,6 +34,10 @@ export class ApiBackEndService {
     return this.http.post(`${this.getBackEndURL()}/admin/getAdminInfo`, { data }, httpOptions);
   }
 
+  getStudentInfo(data) {
+    return this.http.post(`${this.getBackEndURL()}/admin/getStudentInfo`, { data }, httpOptions);
+  }
+
   updateStudentInfo(data) {
     return this.http.post(`${this.getBackEndURL()}/admin/updateStudentInfo`, { data }, httpOptions);
   }

@@ -3,22 +3,39 @@
   <div class="row">
     <div class="col-4">
       <div class="card hover-shadow-lg">
-        <div class="card-header">
-          <div class="d-flex align-items-center py-2">
-            <span
-              class="avatar bg-primary text-white rounded-circle avatar-lg hover-shadow-lg hover-scale-110">{{ publicAuth.studentName | slice:0:2 }}</span>
-            <div class="avatar-content ml-3">
-              <h5 class="mb-0 font-weight-bold">{{ publicAuth.studentName | uppercase }}</h5>
-              <small class="d-block text-muted font-weight-bold">{{ publicAuth.course }}</small>
-              <small class="d-block text-muted font-weight-bold">Matrix ID: {{ publicAuth.studentID }}</small>
-            </div>
-          </div>
+        <div class="card-header d-flex justify-content-between align-items-center py-4">
+          <h5 class="font-weight-bold m-0">Room Assignation</h5>
+          <a href="javascript:void(0)" (click)="resetAll()"><i class="fas fa-redo-alt h5 mb-0"></i></a>
         </div>
         <div class="card-body">
-          <small class="h6 text-sm font-weight-bold">Reminder:</small>
-          <p class="text-sm lh-160 mb-3">Maximum duration allow to book is up to three(3) semesters.</p>
-          <small class="h6 text-sm font-weight-bold">Booking Period:</small>
-          <p class="text-sm lh-160 mb-0">01 January 2021 - 15 January 2021</p>
+          <form [formGroup]="studentSearchForm" (ngSubmit)="searchStudent()">
+            <div class="form-group">
+              <label class="form-control-label text-primary">Student Finder</label>
+              <div class="d-flex justify-content-between">
+                <input type="text" class="form-control" placeholder="Student Matrix ID" formControlName="studentID">
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="studentSearchForm.invalid">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div *ngIf="showStudentInfo" class="card-footer d-flex">
+          <div *ngIf="studentInfo.length == 1" class="d-flex align-items-center">
+            <span
+              class="avatar bg-primary text-white rounded-circle avatar-lg hover-shadow-lg hover-scale-110">{{ studentInfo[0]?.studentName | slice:0:2 }}
+            </span>
+            <div class="avatar-content ml-3">
+              <h5 class="mb-0 font-weight-bold">{{ studentInfo[0]?.studentName | uppercase }}</h5>
+              <small class="d-block text-muted font-weight-bold">{{ studentInfo[0]?.course }}</small>
+              <small class="d-block text-muted font-weight-bold">Matrix ID: {{ studentInfo[0]?.studentID }}</small>
+            </div>
+          </div>
+          <div *ngIf="studentInfo.length != 1" class="flex-fill">
+            <div class="alert alert-danger mb-0 text-center" role="alert">
+              <strong>Opps, student not found or booked!</strong>
+          </div>
+          </div>
         </div>
       </div>
       <div class="card hover-shadow-lg" style="position: -webkit-sticky; position: sticky; top: 6rem; align-self: flex-start;">
@@ -93,7 +110,7 @@
       </div>
     </div>
 
-    <div class="col-8">
+    <div *ngIf="showStudentInfo == true && studentInfo.length == 1" class="col-8">
       <div class="card">
         <div class="card-body">
           <h6 class="mb-4">Step 1: Choose a village</h6>
@@ -155,6 +172,15 @@
         </div>
       </div>
     </div>
+    <div *ngIf="showStudentInfo == false || studentInfo.length != 1" class="col-8">
+      <div class="card bg-primary">
+        <div class="card-body py-10">
+          <div class="my-auto text-center px-3 py-5">
+            <h3 class="text-white hover-scale-110 mb-0">Please select a student to proceed.</h3>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -203,7 +229,7 @@
       <div class="modal-body">
         <h5 class="text-center text-white my-4"><i class="fas fa-check-circle fa-4x"></i></h5>
         <h5 class="modal-title mb-2 text-center">Awesome!</h5>
-        <p class="text-sm mb-4 text-center">Your booking has been confirmed, check your email for booking details. You will be redirected to booking history page.</p>
+        <p class="text-sm mb-4 text-center">Room has been assigned, email with booking details will be sent to the student.</p>
       </div>
     </div>
   </div>

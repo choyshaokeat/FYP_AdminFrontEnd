@@ -34,6 +34,13 @@ export class RoomAssignationComponent implements OnInit {
   minNumberOfSemester: any = 1;
   maxNumberOfSemester: any = 3;
   totalFees: any;
+  studentInfo: any = [];
+  studentSearchForm = this.fb.group({
+    studentID: ['', [
+      Validators.required,
+    ]],
+  })
+  showStudentInfo: any = false;
 
   constructor(
     private API: ApiFrontEndService,
@@ -41,11 +48,11 @@ export class RoomAssignationComponent implements OnInit {
     private EncrDecrService: EncrDecrService,
     private router: Router,
     private spinner: NgxSpinnerService,
+    private fb: FormBuilder
   ) { }
 
   async ngOnInit() {
     await this.subscribeData();
-    await this.getVillage();
   }
 
   async subscribeData() {
@@ -61,7 +68,7 @@ export class RoomAssignationComponent implements OnInit {
   async getVillage() {
     var data = {
       type: "getVillage",
-      gender: this.publicAuth.studentGender
+      gender: this.studentInfo[0].studentGender
     }
     this.village = await this.API.getRoomInfo(data);
     console.log(this.village);
@@ -71,7 +78,7 @@ export class RoomAssignationComponent implements OnInit {
     var data = {
       type: "getBuilding",
       village: village,
-      gender: this.publicAuth.studentGender
+      gender: this.studentInfo[0].studentGender
     }
     this.building = await this.API.getRoomInfo(data);
     this.showRoom = false;
@@ -85,7 +92,7 @@ export class RoomAssignationComponent implements OnInit {
       type: "getRoom",
       village: this.selectedVillage,
       block: building,
-      gender: this.publicAuth.studentGender
+      gender: this.studentInfo[0].studentGender
     }
     this.room = await this.API.getRoomInfo(data);
     this.showRoom = true;
@@ -98,7 +105,7 @@ export class RoomAssignationComponent implements OnInit {
       type: "getRoomCapacity",
       village: this.selectedVillage,
       block: this.selectedBuilding,
-      gender: this.publicAuth.studentGender
+      gender: this.studentInfo[0].studentGender
     }
     this.availableRoomCapacity = await this.API.getRoomInfo(data);
   }
@@ -120,7 +127,7 @@ export class RoomAssignationComponent implements OnInit {
       village: this.selectedVillage,
       block: this.selectedBuilding,
       capacity: this.selectedRoomCapacity,
-      gender: this.publicAuth.studentGender
+      gender: this.studentInfo[0].studentGender
     }
     this.room = await this.API.getRoomInfo(data);
     $('#filterRoom').modal('hide');
@@ -131,7 +138,7 @@ export class RoomAssignationComponent implements OnInit {
       type: "getRoom",
       village: this.selectedVillage,
       block: this.selectedBuilding,
-      gender: this.publicAuth.studentGender
+      gender: this.studentInfo[0].studentGender
     }
     this.room = await this.API.getRoomInfo(data);
     $('#filterRoom').modal('hide');
@@ -177,7 +184,7 @@ export class RoomAssignationComponent implements OnInit {
         type: "updateRoomInfo",
         roomNumber: this.selectedRoom.roomNumber,
         bed: this.selectedRoom.bed,
-        studentID: this.publicAuth.studentID
+        studentID: this.studentInfo[0].studentID
       }
       await this.API.updateStudentInfo(data1);
 
@@ -196,7 +203,7 @@ export class RoomAssignationComponent implements OnInit {
 
       var data3 = {
         type: "createBookingHistory",
-        studentID: this.publicAuth.studentID,
+        studentID: this.studentInfo[0].studentID,
         roomNumber: this.selectedRoom.roomNumber,
         village: this.selectedRoom.village,
         block: this.selectedRoom.block,
@@ -214,8 +221,7 @@ export class RoomAssignationComponent implements OnInit {
 
       $('#bookSucessfully').modal('show');
         await this.sleep(5000).then(() => { $('#bookSucessfully').modal('hide'); });
-        this.router.navigate(['/history']);
-
+        this.resetAll();
       //console.log("Done")
     } else {
       $('#roomOccupied').modal('show');
@@ -231,6 +237,22 @@ export class RoomAssignationComponent implements OnInit {
   clearCart() {
     this.showBookingDetails = false;
     this.selectedRoom = null;
+  }
+
+  async searchStudent() {
+    this.studentInfo = await this.API.getStudentInfo(this.studentSearchForm.value);
+    this.showStudentInfo = true;
+    if (this.studentInfo.length == 1) {
+      await this.getVillage();
+    }
+  }
+
+  resetAll() {
+    this.studentSearchForm.reset();
+    this.showStudentInfo = false;
+    this.clearCart();
+    this.showRoom = false;
+    this.showBuilding = false;
   }
 
   async modalEvent(type) {
