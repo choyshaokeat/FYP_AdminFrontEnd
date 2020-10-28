@@ -48,7 +48,8 @@ export class DataService {
         var data = await this.API.getAdminInfo(this.publicAuth);
         //console.log(data);
         this.updateAdminInfo(await this.EncrDecrService.encryptObject('admin', data[0]));
-        this.updateBookingHistory(await this.API.getBookingInfo(data = { studentID: this.publicAuth.studentID, type: "bookingHistory" }));
+        this.updateActiveBookingHistory(await this.API.getBookingInfo(data = { type: "activeBookingHistory" }));
+        this.updateAllRoomData(await await this.API.getRoomInfo(data = { type: "getAllRoom" }));
         resolve('ok');
       }
       catch (err) {
@@ -65,7 +66,9 @@ export class DataService {
           var data = await this.API.getAdminInfo(this.publicAuth);
           //console.log(data);
           this.updateAdminInfo(await this.EncrDecrService.encryptObject('admin', data[0]));
-          this.updateBookingHistory(await this.API.getBookingInfo(data = { studentID: this.publicAuth.studentID, type: "bookingHistory" }));
+          this.updateActiveBookingHistory(await this.API.getBookingInfo(data = { type: "activeBookingHistory" }));
+        } else if (module = "room") {
+          this.updateAllRoomData(await await this.API.getRoomInfo(data = { type: "getAllRoom" }));
         }
         resolve('ok');
       }
@@ -74,28 +77,6 @@ export class DataService {
         reject(err);
       }
     });
-  }
-
-  async getRoommate() {
-    var data;
-    var roomNumber = await this.API.getBookingInfo(data = { studentID: this.publicAuth.studentID, type: "bookingHistory" });
-    data = {
-      type: "currentRoommates",
-      roomNumber: roomNumber[0].roomNumber
-    };
-    var roommate = await this.API.getBookingInfo(data);
-    return roommate;
-  }
-
-  async checkBookingHistoryCount() {
-    var check = {
-      type: "count",
-      studentID: this.publicAuth.studentID
-    }
-    var count = await this.API.getBookingInfo(check);
-    count = count[0].bookingHistoryCount;
-    //console.log(count);
-    return count;
   }
 
   // SocketIO
@@ -125,17 +106,19 @@ export class DataService {
   }
 
   //booking
-  private bookingHistory = new BehaviorSubject('');
-  currentBookingHistory = this.bookingHistory.asObservable();
-  updateBookingHistory(value) {
-    this.bookingHistory.next(value);
+  private activeBookingHistory = new BehaviorSubject('');
+  currentActiveBookingHistory = this.activeBookingHistory.asObservable();
+  updateActiveBookingHistory(value) {
+    this.activeBookingHistory.next(value);
     //console.log(value);
   }
 
-  private roommate = new BehaviorSubject('');
-  currentRoommate = this.roommate.asObservable();
-  updateRoommate(value) {
-    this.roommate.next(value);
+  //room
+  private allRoomData = new BehaviorSubject('');
+  currentAllRoomData = this.allRoomData.asObservable();
+  updateAllRoomData(value) {
+    this.allRoomData.next(value);
     //console.log(value);
   }
+
 }

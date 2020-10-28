@@ -117,10 +117,10 @@ export class RoomManagerComponent implements OnInit {
   }
 
   async getAllRoomData() {
-    var data = {
-      type: "getAllRoom",
-    }
-    this.allRoomData = await this.API.getRoomInfo(data);
+    this.DataService.syncData("room");
+    this.DataService.currentAllRoomData.subscribe(
+      data => {this.allRoomData = data;}
+    );
   }
 
   async getVillage() {
@@ -189,6 +189,7 @@ export class RoomManagerComponent implements OnInit {
       $('#editRoomModal').modal('hide');
       $('#editRoomSucessfullyModal').modal('show');
       this.editRoomForm.reset();
+      this.DataService.syncData("room");
     }
     catch (err) {
       console.log('err', err);
@@ -203,6 +204,9 @@ export class RoomManagerComponent implements OnInit {
       $('#modalDeleteRoom').modal('hide');
       $('#deleteRoomSucessfullyModal').modal('show');
       this.editRoomForm.reset();
+      this.DataService.syncData("room");
+      await this.getVillage();
+      await this.getCapacity();
     }
     catch (err) {
       console.log('err', err);
@@ -236,6 +240,9 @@ export class RoomManagerComponent implements OnInit {
         $('#addRoomModal').modal('hide');
         $('#addRoomSucessfullyModal').modal('show');
         this.addRoomForm.reset();
+        this.DataService.syncData("room");
+        await this.getVillage();
+        await this.getCapacity();
       }
       catch (err) {
         console.log('err', err);

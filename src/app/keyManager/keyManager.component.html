@@ -1,0 +1,111 @@
+<app-header></app-header>
+<div class="container-fluid d-block mt-7 px-5">
+  <div class="row">
+    <div class="col-3" style="position: -webkit-sticky; position: sticky; top: 6rem; align-self: flex-start;">
+      <div class="card hover-shadow-lg">
+        <div class="card-header d-flex justify-content-between align-items-center py-4">
+          <h5 class="font-weight-bold m-0">Key Manager</h5>
+          <a href="javascript:void(0)" (click)="resetAll()"><i class="fas fa-redo-alt h5 mb-0"></i></a>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="studentSearchForm" (ngSubmit)="searchStudent()">
+            <div class="form-group">
+              <label class="form-control-label text-primary">Student Finder</label>
+              <div class="d-flex justify-content-between">
+                <input type="text" class="form-control" placeholder="Student Matrix ID" formControlName="studentID">
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="studentSearchForm.invalid">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="align-self-center text-center p-3">
+        <img alt="Image placeholder" src="../../assets/img/svg/illustrations/undraw_Tree_swing_646s.svg"
+          class="svg-inject img-fluid">
+      </div>
+    </div>
+
+    <div class="col-9">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered rounded">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col" class="col">Student ID</th>
+                  <th scope="col" class="col">Village</th>
+                  <th scope="col" class="col">Room Number</th>
+                  <th scope="col" class="col">Bed</th>
+                  <th scope="col" class="col">Booking Date</th>
+                  <th scope="col" class="col">Expected In/Out Date</th>
+                  <th scope="col" class="col">Status</th>
+                  <th scope="col" class="text-center col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of studentBookingRecord" class="text-center">
+                  <th scope="row">{{ m.studentID }}</th>
+                  <td>{{ m.village }}</td>
+                  <td>{{ m.roomNumber }}</td>
+                  <td>{{ m.bed }}</td>
+                  <td>{{ m.bookingDate | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ m.expectedCheckInDate | date:'dd/MM/yyyy'}} - {{ m.expectedCheckOutDate | date:'dd/MM/yyyy'}} 
+                    <strong>( {{ m.numberOfSemester }} <span *ngIf="m.numberOfSemester != 'assigned'">Sem</span> )</strong></td>
+                  <td>{{ m.status }}</td>
+                  <td>
+                    <button *ngIf="m.status == 'Checked-in'" type="button" class="btn btn-sm btn-outline-danger py-1" (click)="modalEvent('modalCheckOut', m)">
+                      Check out
+                    </button>
+                    <button *ngIf="m.status == 'Booked'" type="button" class="btn btn-sm btn-outline-success py-1" (click)="modalEvent('modalCheckIn', m)">
+                      Check in
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal bg-translucent-dark fade" id="modalCheckOut" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div>
+          <h5 class="modal-title text-center mb-2" id="myLargeModalLabel">Check Out Confirmation</h5>
+          <p class="text-center mb-4 text-sm lh-140">Please collect key from student.</p>
+          <button type="button" class="btn btn-block btn-animated btn-danger btn-animated-x" (click)="checkOut()">
+            <span class="btn-inner--visible">Check out</span>
+            <span class="btn-inner--hidden">
+              <i class="fas fa-check"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal bg-translucent-dark fade" id="modalCheckIn" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div>
+          <h5 class="modal-title text-center mb-2" id="myLargeModalLabel">Check In Confirmation</h5>
+          <p class="text-center mb-4 text-sm lh-140">Please assign key to student.</p>
+          <button type="button" class="btn btn-block btn-animated btn-success btn-animated-x" (click)="checkIn()">
+            <span class="btn-inner--visible">Check in</span>
+            <span class="btn-inner--hidden">
+              <i class="fas fa-check"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

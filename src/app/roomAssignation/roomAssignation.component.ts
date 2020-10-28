@@ -40,6 +40,14 @@ export class RoomAssignationComponent implements OnInit {
       Validators.required,
     ]],
   })
+  priceForm = this.fb.group({
+    accommodationPrice: ['', [
+      Validators.required,
+    ]],
+    duration: ['', [
+      Validators.required,
+    ]],
+  })
   showStudentInfo: any = false;
 
   constructor(
@@ -71,7 +79,7 @@ export class RoomAssignationComponent implements OnInit {
       gender: this.studentInfo[0].studentGender
     }
     this.village = await this.API.getRoomInfo(data);
-    console.log(this.village);
+    //console.log(this.village);
   }
 
   async getBuilding(village) {
@@ -84,7 +92,7 @@ export class RoomAssignationComponent implements OnInit {
     this.showRoom = false;
     this.showBuilding = true;
     this.selectedVillage = village;
-    console.log(this.village);
+    //console.log(this.village);
   }
 
   async getRoom(building) {
@@ -97,7 +105,7 @@ export class RoomAssignationComponent implements OnInit {
     this.room = await this.API.getRoomInfo(data);
     this.showRoom = true;
     this.selectedBuilding = building;
-    console.log(this.room);
+    //console.log(this.room);
   }
 
   async getRoomCapacity() {
@@ -182,6 +190,7 @@ export class RoomAssignationComponent implements OnInit {
     if (availability == true) {
       var data1 = {
         type: "updateRoomInfo",
+        bookingStatus: 2,
         roomNumber: this.selectedRoom.roomNumber,
         bed: this.selectedRoom.bed,
         studentID: this.studentInfo[0].studentID
@@ -191,15 +200,18 @@ export class RoomAssignationComponent implements OnInit {
       var data2 = {
         type: "updateRoomInfo",
         roomNumber: this.selectedRoom.roomNumber,
-        bed: this.selectedRoom.bed
+        bed: this.selectedRoom.bed,
+        status: 1
       }
       await this.API.updateRoomInfo(data2);
 
       var data4 = {
-        type: "updateCurrentCapacity",
+        type: "deleteCurrentCapacity",
         roomNumber: this.selectedRoom.roomNumber,
       }
       await this.API.updateRoomInfo(data4);
+
+      var date = this.priceForm.value.duration.split(" to ");
 
       var data3 = {
         type: "createBookingHistory",
@@ -210,12 +222,14 @@ export class RoomAssignationComponent implements OnInit {
         level: this.selectedRoom.level,
         bed: this.selectedRoom.bed,
         aircond: this.selectedRoom.aircond,
-        fees: this.selectedRoom.price*this.numberOfSemester,
+        fees: this.priceForm.value.accommodationPrice,
         status: "Booked",
-        checkInDate: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
-        checkOutDate: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
-        numberOfSemester: this.numberOfSemester 
+        bookingDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+        expectedCheckInDate: moment(date[0]).format("YYYY-MM-DD HH:mm:ss"),
+        expectedCheckOutDate: moment(date[1]).format("YYYY-MM-DD HH:mm:ss"),
+        numberOfSemester: "assigned"
       }
+      //console.log(data3);
       await this.API.updateBookingInfo(data3);
       this.DataService.callAll();
 
@@ -227,6 +241,7 @@ export class RoomAssignationComponent implements OnInit {
       $('#roomOccupied').modal('show');
       this.resetFilter();
       this.clearCart();
+      this.resetAll();
     }
   }
 
@@ -236,6 +251,7 @@ export class RoomAssignationComponent implements OnInit {
 
   clearCart() {
     this.showBookingDetails = false;
+    this.priceForm.reset();
     this.selectedRoom = null;
   }
 
