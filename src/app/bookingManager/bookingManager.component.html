@@ -1,28 +1,126 @@
 <app-header></app-header>
-<div class="main-content">
-  <!-- MD and Below -->
-  <section id='section_1' class="">
-    <div class="container-fluid pb-5 vh-100 bg-brown d-flex align-items-center position-relative zindex-100 py-10">
-      <div class="container">
-        <div class="col">
-          <div class="row">
-            <div class="col-6 align-self-center">
-              <h1 class="font-weight-900 text-white mb-4 display-3" style="text-shadow: 0px 0px 6px #7e6a58;">Roomy</h1>
-              <p class="lead lh-180 text-white font-weight-bold" style="text-shadow: 0px 0px 4px #7e6a58;">Roomy is an <br>
-                <span class="text-dark" style="text-shadow: 0px 0px 0px #7e6a58;">Automated Student Accommodation Booking System</span>
-                <br>that takes room booking to the next level.</p>
-            </div>
-            <div class="col-6 ml-lg-auto align-self-end">
-              <div class="position-relative" style="z-index: 10;">
-                <img alt="Image placeholder" src="assets/img/1554481096-visuel-header-messenger2.png"
-                  class="img-fluid img-center">
+<div class="container-fluid d-block mt-7 px-5">
+  <div class="row">
+    <div class="col-3" style="position: -webkit-sticky; position: sticky; top: 6rem; align-self: flex-start;">
+      <div class="card hover-shadow-lg">
+        <div class="card-header">
+          <h5 class="font-weight-bold m-0">Booking Period</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success text-center" role="alert">
+            <h6 class="text-success my-1">{{ bookingDocument[0]?.bookingPeriodStart | date:'dd/MM/yyyy' }} - {{ bookingDocument[0]?.bookingPeriodEnd | date:'dd/MM/yyyy' }}</h6>
+          </div>
+          <form [formGroup]="bookingPeriodForm" (ngSubmit)="updateBookingPeriod()">
+            <div class="form-group">
+              <label class="form-control-label text-primary">Update Booking Period</label>
+              <div class="d-flex justify-content-between">
+                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
               </div>
             </div>
+          </form>
+        </div>
+      </div>
+      <div class="card hover-shadow-lg">
+        <div class="card-header">
+          <h5 class="font-weight-bold m-0">Semester Configuration</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="bookingPeriodForm" (ngSubmit)="updateBookingPeriod()">
+            <div class="form-group">
+              <label class="form-control-label text-primary">Sem 1</label>
+              <div class="d-flex justify-content-between">
+                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label text-primary">Sem 2</label>
+              <div class="d-flex justify-content-between">
+                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label text-primary">Sem 3</label>
+              <div class="d-flex justify-content-between">
+                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
+                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label text-primary">Max Semester Allowed</label>
+              <div class="d-flex justify-content-between">
+                <input type="text" class="form-control" placeholder="Student Matrix ID" formControlName="bookingPeriod">
+                <button type="submit" class="btn btn-success ml-2" [disabled]="bookingPeriodForm.invalid">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- <div class="align-self-center text-center p-3">
+        <img alt="Image placeholder" src="../../assets/img/svg/illustrations/Documents-pana.svg"
+          class="svg-inject img-fluid">
+      </div> -->
+    </div>
+
+    <div class="col-9">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="font-weight-bold m-0">Booking History</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered rounded">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col" class="col">Student ID</th>
+                  <th scope="col" class="col">Village</th>
+                  <th scope="col" class="col">Room Number</th>
+                  <th scope="col" class="col">Bed</th>
+                  <th scope="col" class="col">No. of semester</th>
+                  <th scope="col" class="col">Booking Date</th>
+                  <th scope="col" class="col">Expected/<span class="text-success">Actual Date</span></th>
+                  <th scope="col" class="col">Status</th>
+                  <th scope="col" class="text-center col">Invoice No.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let m of bookingData" class="text-center">
+                  <th scope="row">{{ m.studentID }}</th>
+                  <td>{{ m.village }}</td>
+                  <td>{{ m.roomNumber }}</td>
+                  <td>{{ m.bed }}</td>
+                  <td>{{ m.numberOfSemester }} <span *ngIf="m.numberOfSemester != 'assigned'">Sem</span></td>
+                  <td>{{ m.bookingDate | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    <div class="align-items-center">
+                      <div class="lh-100 mb-2">
+                        {{ m.expectedCheckInDate | date:'dd/MM/yyyy'}} - {{ m.expectedCheckOutDate | date:'dd/MM/yyyy'}} 
+                      </div>
+                      <div class="lh-100 mb-0 text-success">
+                        {{ m.checkInDate | date:'dd/MM/yyyy'}} - {{ m.checkOutDate | date:'dd/MM/yyyy'}} <span *ngIf="m.checkOutDate == null">TBA</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ m.status }}</td>
+                  <td>{{ m.invoiceNumber }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
-
-<!-- Modal -->

@@ -70,6 +70,7 @@ export class keyManagerComponent implements OnInit {
       type: "checkIn",
       studentID: this.selectedStudent.studentID,
       roomNumber: this.selectedStudent.roomNumber,
+      bed: this.selectedStudent.bed,
       checkInDate: moment().format("YYYY-MM-DD HH:mm:ss"),
     }
     await this.API.updateBookingInfo(data);
@@ -83,6 +84,7 @@ export class keyManagerComponent implements OnInit {
       type: "checkOut",
       studentID: this.selectedStudent.studentID,
       roomNumber: this.selectedStudent.roomNumber,
+      bed: this.selectedStudent.bed,
       checkOutDate: moment().format("YYYY-MM-DD HH:mm:ss"),
     }
     await this.API.updateBookingInfo(data);

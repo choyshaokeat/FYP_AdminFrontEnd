@@ -21,6 +21,13 @@ declare var $: any;
 export class BookingManagerComponent implements OnInit {
 
   publicAuth: any;
+  bookingPeriodForm = this.fb.group({
+    bookingPeriod: ['', [
+      Validators.required,
+    ]],
+  })
+  bookingDocument: any = [];
+  bookingData: any = [];
 
   constructor(
     private API: ApiFrontEndService,
@@ -32,7 +39,9 @@ export class BookingManagerComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.subscribeData();
+    await this.subscribeData();
+    await this.getBookingDocument();
+    this.getBookingHistory();
   }
 
   async subscribeData() {
@@ -42,5 +51,20 @@ export class BookingManagerComponent implements OnInit {
     if (this.publicAuth == undefined || this.publicAuth == 'guest') {
       this.router.navigate(['/login']);
     }
+  }
+
+  async getBookingDocument() {
+    this.bookingDocument = await this.API.getBookingDocument(null);
+    console.log(this.bookingDocument);
+  }
+
+  async getBookingHistory() {
+    var data;
+    this.bookingData = await this.API.getBookingInfo(data = {type: "all"})
+    console.log(this.bookingData);
+  }
+
+  async updateBookingPeriod() {
+
   }
 }
