@@ -63,10 +63,12 @@ export class BookingManagerComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.spinner.show();
     await this.subscribeData();
     await this.getBookingDocument();
-    this.getBookingHistory();
-    this.generateTimeList();
+    await this.getBookingHistory();
+    await this.generateTimeList();
+    this.spinner.hide();
   }
 
   async subscribeData() {
