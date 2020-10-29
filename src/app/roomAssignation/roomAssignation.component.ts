@@ -224,9 +224,9 @@ export class RoomAssignationComponent implements OnInit {
         aircond: this.selectedRoom.aircond,
         fees: this.priceForm.value.accommodationPrice,
         status: "Booked",
-        bookingDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-        expectedCheckInDate: moment(date[0]).format("YYYY-MM-DD HH:mm:ss"),
-        expectedCheckOutDate: moment(date[1]).format("YYYY-MM-DD HH:mm:ss"),
+        bookingDate: moment().utc().format("YYYY-MM-DD HH:mm:ss"),
+        expectedCheckInDate: moment(date[0]).utc().format("YYYY-MM-DD HH:mm:ss"),
+        expectedCheckOutDate: moment(date[1]).utc().format("YYYY-MM-DD HH:mm:ss"),
         numberOfSemester: "assigned"
       }
       //console.log(data3);

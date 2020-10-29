@@ -24,7 +24,7 @@
     "@ng-bootstrap/ng-bootstrap": "^6.0.3",
     "@zxing/ngx-scanner": "^3.0.0",
     "angular2-qrcode": "^2.0.3",
-    "angularx-flatpickr": "^6.3.1",
+    "angularx-flatpickr": "^6.5.1",
     "angularx-qrcode": "^2.1.1",
     "angularx-social-login": "^2.3.1",
     "apexcharts": "^3.22.0",

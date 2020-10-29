@@ -1,6 +1,6 @@
 <header class="fixed-top">
-    <nav class="navbar navbar-horizontal navbar-expand-lg navbar-dark shadow shadow-lg bg-primary py-3 px-5">
-        <div class="container-fluid">
+    <nav class="navbar navbar-horizontal navbar-expand-lg navbar-dark shadow shadow-lg bg-primary py-2 px-5">
+        <div class="container-fluid py-1">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-primary"
                 aria-controls="navbar-primary" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -14,12 +14,20 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" [routerLink]="['/roomManager']">
+                    <li class="nav-item dropdown dropdown-animate">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="h6 text-white">
-                                Room Details
+                                Room
                             </span>
                         </a>
+                        <div class="dropdown-menu dropdown-menu-sm px-0 mt-2">
+                            <a class="dropdown-item text-sm px-4" href="javascript:void(0)" [routerLink]="['/roomAssignation']">
+                                <i class="fas fa-user-tie text-primary"></i>Room Assignation
+                            </a>
+                            <a class="dropdown-item text-sm px-4" href="javascript:void(0)" [routerLink]="['/roomManager']">
+                                <i class="fas fa-bookmark text-primary"></i>Room Details
+                            </a>
+                        </div>
                     </li>
                     <li class="nav-item dropdown dropdown-animate">
                         <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,9 +36,6 @@
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-sm px-0 mt-2">
-                            <a class="dropdown-item text-sm px-4" href="javascript:void(0)" [routerLink]="['/roomAssignation']">
-                                <i class="fas fa-user-tie text-primary"></i>Room Assignation
-                            </a>
                             <a class="dropdown-item text-sm px-4" href="javascript:void(0)" [routerLink]="['/bookingManager']">
                                 <i class="fas fa-bookmark text-primary"></i>Booking Manager
                             </a>

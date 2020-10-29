@@ -1,72 +1,66 @@
 <app-header></app-header>
 <div class="container-fluid d-block mt-7 px-5">
   <div class="row">
-    <div class="col-3" style="position: -webkit-sticky; position: sticky; top: 6rem; align-self: flex-start;">
+    <div class="col-3">
       <div class="card hover-shadow-lg">
         <div class="card-header">
           <h5 class="font-weight-bold m-0">Booking Period</h5>
         </div>
-        <div class="card-body">
-          <div class="alert alert-success text-center" role="alert">
-            <h6 class="text-success my-1">{{ bookingDocument[0]?.bookingPeriodStart | date:'dd/MM/yyyy' }} - {{ bookingDocument[0]?.bookingPeriodEnd | date:'dd/MM/yyyy' }}</h6>
+        <form [formGroup]="bookingPeriodForm" (ngSubmit)="updateBookingPeriod()">
+          <div class="card-body">
+            <div class="alert alert-success text-center" role="alert">
+              <h6 class="text-success my-1">{{ bookingDocument[0]?.bookingPeriodStart | date:'dd/MM/yyyy, h:mm a' }}</h6>
+              <h6 class="text-primary my-1"><i class="fas fa-angle-down"></i></h6>
+              <h6 class="text-success my-1">{{ bookingDocument[0]?.bookingPeriodEnd | date:'dd/MM/yyyy, h:mm a' }}</h6>
+            </div>
+              <div class="form-group mb-0">
+                <label class="form-control-label text-primary">Update Booking Period</label>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <input class="form-control form-control-sm text-center mr-2" type="text" placeholder="Start date" formControlName="bookingPeriodStart" mwlFlatpickr>
+                  <select class="form-control form-control-sm" formControlName="bookingPeriodStartTime" placeholder="Start time">
+                    <option *ngFor="let m of time" [ngValue]="m">{{ m }}</option>
+                  </select>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <input class="form-control form-control-sm text-center mr-2" type="text" placeholder="End date" formControlName="bookingPeriodEnd" mwlFlatpickr>
+                  <select class="form-control form-control-sm" formControlName="bookingPeriodEndTime" placeholder="End time">
+                    <option *ngFor="let m of time" [ngValue]="m">{{ m }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          <div class="card-footer px-0 py-0 border-0 overflow-hidden">
+            <button type="submit" class="btn btn-block btn-primary rounded-0" [disabled]="bookingPeriodForm.invalid">Update</button>
           </div>
-          <form [formGroup]="bookingPeriodForm" (ngSubmit)="updateBookingPeriod()">
-            <div class="form-group">
-              <label class="form-control-label text-primary">Update Booking Period</label>
-              <div class="d-flex justify-content-between">
-                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
-                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
-                  <i class="fas fa-arrow-right"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
-      <div class="card hover-shadow-lg">
-        <div class="card-header">
-          <h5 class="font-weight-bold m-0">Semester Configuration</h5>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="bookingPeriodForm" (ngSubmit)="updateBookingPeriod()">
-            <div class="form-group">
-              <label class="form-control-label text-primary">Sem 1</label>
-              <div class="d-flex justify-content-between">
-                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
-                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
-                  <i class="fas fa-arrow-right"></i>
-                </button>
+      <div class="card hover-shadow-lg" style="position: -webkit-sticky; position: sticky; top: 6rem; align-self: flex-start;">
+        <form [formGroup]="semConfigurationForm" (ngSubmit)="updateSemConfiguration()">
+          <div class="card-header">
+            <h5 class="font-weight-bold m-0">Semester Configuration</h5>
+          </div>
+          <div class="card-body">
+              <div class="form-group">
+                <label class="form-control-label text-primary">Sem 1</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Select Duration" formControlName="sem1duration" mode="range" mwlFlatpickr>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="form-control-label text-primary">Sem 2</label>
-              <div class="d-flex justify-content-between">
-                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
-                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
-                  <i class="fas fa-arrow-right"></i>
-                </button>
+              <div class="form-group">
+                <label class="form-control-label text-primary">Sem 2</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Select Duration" formControlName="sem2duration" mode="range" mwlFlatpickr>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="form-control-label text-primary">Sem 3</label>
-              <div class="d-flex justify-content-between">
-                <input class="form-control text-center" type="text" placeholder="Select Period" formControlName="bookingPeriod" mode="range" mwlFlatpickr>
-                <button type="submit" class="btn btn-primary ml-2" [disabled]="bookingPeriodForm.invalid">
-                  <i class="fas fa-arrow-right"></i>
-                </button>
+              <div class="form-group">
+                <label class="form-control-label text-primary">Sem 3</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Select Duration" formControlName="sem3duration" mode="range" mwlFlatpickr>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="form-control-label text-primary">Max Semester Allowed</label>
-              <div class="d-flex justify-content-between">
-                <input type="text" class="form-control" placeholder="Student Matrix ID" formControlName="bookingPeriod">
-                <button type="submit" class="btn btn-success ml-2" [disabled]="bookingPeriodForm.invalid">
-                  <i class="fas fa-arrow-right"></i>
-                </button>
+              <div class="form-group mb-0">
+                <label class="form-control-label text-primary">Max Semester Allowed</label>
+                <input type="number" class="form-control form-control-sm" placeholder="Number of semester" min="1" formControlName="maxBookingSemester">
               </div>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div class="card-footer px-0 py-0 border-0 overflow-hidden">
+            <button type="submit" class="btn btn-block btn-primary rounded-0" [disabled]="semConfigurationForm.invalid">Update</button>
+          </div>
+        </form>
       </div>
       <!-- <div class="align-self-center text-center p-3">
         <img alt="Image placeholder" src="../../assets/img/svg/illustrations/Documents-pana.svg"
@@ -120,6 +114,19 @@
             </table>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal modal-success bg-translucent-dark fade" id="updateInfo" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document" data-backdrop="false">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5 class="text-center text-white my-4"><i class="fas fa-check-circle fa-4x"></i></h5>
+        <h5 class="modal-title mb-2 text-center">Info Updated!</h5>
+        <p class="text-sm mb-4 text-center">Awesome, {{ updateInfo }} is up to date.</p>
       </div>
     </div>
   </div>

@@ -30,7 +30,13 @@
     <div class="col-9">
       <div class="card">
         <div class="card-body">
-          <div class="table-responsive">
+          <div *ngIf="studentBookingRecord.length == 0">
+            <div class="text-center align-items-center py-5">
+              <h4>Opps. Record not found...</h4>
+              <p>Please ensure you enter the right student ID.</p>
+            </div>
+          </div>
+          <div *ngIf="studentBookingRecord.length != 0" class="table-responsive">
             <table class="table table-bordered rounded">
               <thead>
                 <tr class="text-center">
