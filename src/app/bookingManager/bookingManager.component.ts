@@ -105,6 +105,9 @@ export class BookingManagerComponent implements OnInit {
   async getBookingHistory() {
     var data;
     this.bookingData = await this.API.getBookingInfo(data = {type: "all"})
+    for (var x in this.bookingData) {
+      this.bookingData[x].id = this.bookingData[x].id.toString().padStart(8 ,"0");
+    }
     //console.log(this.bookingData);
   }
 
