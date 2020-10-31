@@ -49,7 +49,20 @@ export class DataService {
         //console.log(data);
         this.updateAdminInfo(await this.EncrDecrService.encryptObject('admin', data[0]));
         this.updateActiveBookingHistory(await this.API.getBookingInfo(data = { type: "activeBookingHistory" }));
-        this.updateAllRoomData(await await this.API.getRoomInfo(data = { type: "getAllRoom" }));
+        this.updateAllRoomData(await this.API.getRoomInfo(data = { type: "getAllRoom" }));
+        this.updateBookingRateChartData(await this.API.getChartData(data = { type: "bookingRateChart" }));
+        var date = await this.API.getBookingDocument(null);
+        var data1 = {
+          type: "semBookChart",
+          sem1CheckInDate: moment(date[0].sem1CheckInDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+          sem2CheckInDate: moment(date[0].sem2CheckInDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+          sem3CheckInDate: moment(date[0].sem3CheckInDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+          sem1CheckOutDate: moment(date[0].sem1CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+          sem2CheckOutDate: moment(date[0].sem2CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+          sem3CheckOutDate: moment(date[0].sem3CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+        }
+        this.updateSemBookChartData( await this.API.getChartData(data1));
+        this.updateVillageOccupancyChartData(await this.calculateRoomOccupancy());
         resolve('ok');
       }
       catch (err) {
@@ -68,7 +81,21 @@ export class DataService {
           this.updateAdminInfo(await this.EncrDecrService.encryptObject('admin', data[0]));
           this.updateActiveBookingHistory(await this.API.getBookingInfo(data = { type: "activeBookingHistory" }));
         } else if (module = "room") {
-          this.updateAllRoomData(await await this.API.getRoomInfo(data = { type: "getAllRoom" }));
+          this.updateAllRoomData(await this.API.getRoomInfo(data = { type: "getAllRoom" }));
+        } else if (module = "chart") {
+          this.updateBookingRateChartData(await this.API.getChartData(data = { type: "bookingRateChart" }));
+          var date = await this.API.getBookingDocument(null);
+          var data1 = {
+            type: "semBookChart",
+            sem1CheckInDate: moment(date[0].sem1CheckInDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+            sem2CheckInDate: moment(date[0].sem2CheckInDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+            sem3CheckInDate: moment(date[0].sem3CheckInDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+            sem1CheckOutDate: moment(date[0].sem1CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+            sem2CheckOutDate: moment(date[0].sem2CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+            sem3CheckOutDate: moment(date[0].sem3CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
+          }
+          this.updateSemBookChartData(await this.API.getChartData(data1));
+          this.updateVillageOccupancyChartData(await this.calculateRoomOccupancy());
         }
         resolve('ok');
       }
@@ -85,6 +112,35 @@ export class DataService {
   updateBrodcastData(value) {
     this.brodcastData.next(value);
   } */
+
+
+  async calculateRoomOccupancy() {
+    var data = {
+      type: "getAllVillage",
+    }
+    var village: any = await this.API.getRoomInfo(data);
+    //console.log(village);
+    let result = [];
+
+    for (let j=0; j<=3; j++){
+      var object = [];
+      for(let i of village) {
+        let a = {
+          type: "villageOccupancyChart",
+          village: i.village,
+          status: j
+        }
+        var res = await this.API.getChartData(a);
+        //console.log(i);
+        //console.log(res[0].count);
+        object.push(res[0].count);
+      }
+      //console.log(object);
+      result.push(object);
+    }
+    //console.log(result);
+    return(result);
+  }
 
   // Service Aunthenticator
   public publicAuth: any;
@@ -118,6 +174,28 @@ export class DataService {
   currentAllRoomData = this.allRoomData.asObservable();
   updateAllRoomData(value) {
     this.allRoomData.next(value);
+    //console.log(value);
+  }
+
+  //chart
+  private bookingRateChartData = new BehaviorSubject('');
+  currentBookingRateChartData = this.bookingRateChartData.asObservable();
+  updateBookingRateChartData(value) {
+    this.bookingRateChartData.next(value);
+    //console.log(value);
+  }
+
+  private semBookChartData = new BehaviorSubject('');
+  currentSemBookChartData = this.semBookChartData.asObservable();
+  updateSemBookChartData(value) {
+    this.semBookChartData.next(value);
+    //console.log(value);
+  }
+
+  private villageOccupancyChartData = new BehaviorSubject('');
+  currentVillageOccupancyChartData = this.villageOccupancyChartData.asObservable();
+  updateVillageOccupancyChartData(value) {
+    this.villageOccupancyChartData.next(value);
     //console.log(value);
   }
 

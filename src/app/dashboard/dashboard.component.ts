@@ -68,12 +68,15 @@ declare var $: any;
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
+  publicAuth: any;
+  bookingRateData: any;
+  bookingData: any;
+  bookingDocument: any;
+
   @ViewChild("chart") chart: ChartComponent;
   public bookingRateChart: Partial<bookingRateChart>;
   public semBookChart: Partial<semBookChart>;
   public villageOccupancyChart: Partial<villageOccupancyChart>;
-
-  publicAuth: any;
 
   constructor(
     private API: ApiFrontEndService,
@@ -84,13 +87,13 @@ export class DashboardComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.bookingRateChart = {
-      series: [44, 55, 13, 43, 22],
+      series: [1],
       chart: {
         width: 450,
         height: 320,
         type: "pie"
       },
-      labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+      labels: ["Booked", "Pending"],
       responsive: [
         {
           breakpoint: 480,
@@ -108,8 +111,8 @@ export class DashboardComponent implements OnInit {
     this.semBookChart = {
       series: [
         {
-          name: "distibuted",
-          data: [21, 22, 10]
+          name: "Number of Student",
+          data: [0, 0, 0]
         }
       ],
       chart: {
@@ -144,9 +147,9 @@ export class DashboardComponent implements OnInit {
       },
       xaxis: {
         categories: [
-          ["John", "Doe"],
-          ["Joe", "Smith"],
-          ["Jake", "Williams"],
+          ["Semester 1"],
+          ["Semester 2"],
+          ["Semester 3"],
         ],
         labels: {
           style: {
@@ -158,17 +161,32 @@ export class DashboardComponent implements OnInit {
             fontSize: "12px"
           }
         }
-      }
+      },
+      yaxis: {
+        "labels": {
+            "formatter": function (val) {
+                return val.toFixed(0)
+            }
+        }
+    }
     };
     this.villageOccupancyChart = {
       series: [
         {
-          name: "OCCUPIED",
-          data: [44, 55, 41, 44, 55, 41]
+          name: "AVAILABLE",
+          data: [0]
         },
         {
-          name: "EMPTY",
-          data: [13, 23, 20, 44, 55, 41]
+          name: "OCCUPIED",
+          data: [0]
+        },
+        {
+          name: "RENOVATING",
+          data: [0]
+        },
+        {
+          name: "UNAVAILABLE",
+          data: [0]
         },
       ],
       chart: {
@@ -191,14 +209,7 @@ export class DashboardComponent implements OnInit {
         }
       ],
       xaxis: {
-        categories: [
-          "V1",
-          "V2",
-          "V3",
-          "V4",
-          "V5",
-          "V6",
-        ]
+        categories: ["V1", "V2", "v3", "V4"]
       },
       fill: {
         opacity: 1
@@ -212,7 +223,13 @@ export class DashboardComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.subscribeData();
+    this.spinner.show();
+    await this.subscribeData();
+    await this.DataService.syncData('chart');
+    await this.renderChart();
+    await this.getBookinDocument();
+    await this.getBookingHistory();
+    this.spinner.hide();
   }
 
   async subscribeData() {
@@ -223,4 +240,83 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/login']);
     }
   }
+
+  /* async renderChart() {
+    var data;
+    var res1 = await this.API.getChartData(data = { type: "bookingRateChart" });
+    this.bookingRateChart.series = [res1[0].booked, res1[0].notBook];
+
+    var res2 = await this.API.getChartData(data = { type: "bookingRateChart" });
+  } */
+
+  async renderChart() {
+    //bookRateChart
+    this.DataService.currentBookingRateChartData.subscribe(
+      data => {
+        var res: any = data;
+        this.bookingRateChart.series = [res[0].booked, res[0].notBook];
+    });
+    
+    //semBookChart
+    this.DataService.currentSemBookChartData.subscribe(
+      data => {
+        var res: any = data;
+        this.semBookChart.series = [{
+          data: [res[0].sem1Data, res[0].sem2Data, res[0].sem3Data]
+        }];
+    });
+
+    //villageOccupancyChart
+    var data = {
+      type: "getAllVillage",
+    }
+    var village: any = await this.API.getRoomInfo(data);
+    var villageArray = [];
+    for (let i of village) {
+      villageArray.push("V" + i.village.toString())
+    }
+    //console.log(villageArray);
+    this.villageOccupancyChart.xaxis = {
+      categories: villageArray
+    };
+
+    this.DataService.currentVillageOccupancyChartData.subscribe(
+      data => {
+        //console.log(data);
+        var available: any = data[0];
+        var occupied: any = data[1];
+        var renovating: any = data[2];
+        var unavailable: any = data[3];
+        this.villageOccupancyChart.series = [
+          {
+            name: "AVAILABLE",
+            data: available
+          },
+          {
+            name: "OCCUPIED",
+            data: occupied
+          },
+          {
+            name: "RENOVATING",
+            data: renovating
+          },
+          {
+            name: "UNAVAILABLE",
+            data: unavailable
+          },
+        ];
+    });
+    
+  }
+
+  async getBookingHistory() {
+    var data;
+    this.bookingData = await this.API.getBookingInfo(data = {type: "all"})
+    //console.log(this.bookingData);
+  }
+
+  async getBookinDocument() {
+    this.bookingDocument = await this.API.getBookingDocument(null);
+  }
+
 }

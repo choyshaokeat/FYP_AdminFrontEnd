@@ -6,7 +6,7 @@
         <div class="col-6 d-flex">
           <div class="card hover-shadow-lg flex-fill">
             <div class="card-body d-flex align-items-center justify-content-center py-6">
-              <div class="countdown countdown-hero text-center col-8 pb-2" data-countdown-date="12/12/2020">
+              <!-- <div class="countdown countdown-hero text-center col-8 pb-2" data-countdown-date="12/12/2020">
                 <div class="countdown-item"><span class="countdown-digit">46</span><span
                     class="countdown-label countdown-days">days</span></div>
                 <div class="countdown-item"><span class="countdown-digit">10</span><span
@@ -15,23 +15,54 @@
                     class="countdown-separator">:</span><span class="countdown-label">minutes</span></div>
                 <div class="countdown-item"><span class="countdown-digit">04</span><span
                     class="countdown-label">seconds</span></div>
+              </div> -->
+              <div class="col-8 pb-2 px-5">
+                <div>
+                  <h4 class="text-primary font-weight-bold mb-4">UPCOMING ROOM REGISTRATION</h4>
+                  <span class="badge badge-soft-success badge-lg text-sm">
+                    {{ bookingDocument[0].bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}
+                  </span>
+                  <span class="mx-2">TO</span>
+                  <span class="badge badge-soft-danger badge-lg text-sm">
+                    {{ bookingDocument[0].bookingPeriodEnd | date:'dd MMM yyyy, hh:mm a' }}
+                  </span>
+                </div>
+                <!-- <h2>{{ bookingDocument[0].bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}</h2>
+                <h2>{{ bookingDocument[0].bookingPeriodEnd | date:'dd MMM yyyy, hh:mm a' }}</h2> -->
               </div>
               <div class="col-4">
-                <h5 class="card-title">Upcoming Room Registration</h5>
-                <p class="card-text pt-2">01 January 2021</p>
+                <div class="align-self-center text-center">
+                  <img alt="Image placeholder" src="../../assets/img/svg/illustrations/Time management-pana.svg"
+                    class="svg-inject img-fluid">
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="col-6 d-flex">
           <div class="card hover-shadow-lg flex-fill">
-            <div class="card-body d-flex align-items-center justify-content-center py-6">
-              <div class="col-8">
-
+            <div class="card-body d-flex align-items-center justify-content-center py-4">
+              <div class="col-9 px-5">
+                <div class="card mb-0 shadow-none bg-secondary">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-borderless align-items-center text-primary">
+                        <tbody>
+                          <tr *ngFor="let m of bookingData | slice:0:3" class="text-center border-none">
+                            <th scope="row">{{ m.studentID }}</th>
+                            <td>{{ m.roomNumber }}</td>
+                            <td>{{ m.bed }}</td>
+                            <td>{{ m.status }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col-4">
+              <div class="col-3">
                 <h5 class="card-title">Recent Booking Activities</h5>
-                <button type="button" class="btn btn-animated btn-primary btn-sm btn-animated-x">
+                <button type="button" class="btn btn-animated btn-primary btn-sm btn-animated-x" [routerLink]="['/bookingManager']">
                   <span class="btn-inner--visible">View All</span>
                   <span class="btn-inner--hidden">
                       <i class="fas fa-arrow-right"></i>
@@ -52,8 +83,7 @@
               </div>
             </div>
             <div class="card-footer text-center">
-              <h5 class="card-title">Booking Rate</h5>
-              <p class="card-text">Some quick example text....</p>
+              <h5 class="card-title mb-0">Current Booking Rate</h5>
             </div>
           </div>
         </div>
@@ -66,8 +96,7 @@
                 [colors]="semBookChart.colors" [grid]="semBookChart.grid"></apx-chart>
             </div>
             <div class="card-footer text-center">
-              <h5 class="card-title">Room Booked</h5>
-              <p class="card-text">Some quick example text....</p>
+              <h5 class="card-title mb-0">Booking Amount by Semester</h5>
             </div>
           </div>
         </div>
@@ -82,8 +111,7 @@
               </div>
             </div>
             <div class="card-footer text-center">
-              <h5 class="card-title">Village Occupancy Percentage</h5>
-              <p class="card-text">Some quick example text....</p>
+              <h5 class="card-title mb-0">Village Occupancy Percentage</h5>
             </div>
           </div>
         </div>

@@ -66,4 +66,8 @@ export class ApiBackEndService {
   updateBookingDocument(data) {
     return this.http.post(`${this.getBackEndURL()}/admin/updateBookingDocument`, { data }, httpOptions);
   }
+
+  getChartData(data) {
+    return this.http.post(`${this.getBackEndURL()}/admin/getChartData`, { data }, httpOptions);
+  }
 }

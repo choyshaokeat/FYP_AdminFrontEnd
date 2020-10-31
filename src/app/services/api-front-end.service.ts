@@ -195,4 +195,23 @@ export class ApiFrontEndService {
       );
     });
   }
+
+  public getChartData(data) {
+    return new Promise((resolve, reject) => {
+      data = this.EncrDecrService.encryptObject('admin', data);
+      this.ApiBackEndService.getChartData(data).subscribe(
+        (res: { status, data }) => {
+          res = this.EncrDecrService.decryptObject('admin', res);
+          if (res.status == 200) {
+            resolve(res.data)
+          }
+          else reject(res.status);
+        },
+        (err) => {
+          reject(err)
+        }
+      );
+    });
+  }
+
 }

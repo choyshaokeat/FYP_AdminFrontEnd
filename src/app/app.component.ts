@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     await this.serviceLogin();
-    // await this.DataService.callAll();
+    //await this.DataService.callAll();
     await this.subscribeData();
   }
 
