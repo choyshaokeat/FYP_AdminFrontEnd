@@ -251,6 +251,7 @@ export class DashboardComponent implements OnInit {
 
   async renderChart() {
     //bookRateChart
+    console.log('renderChart')
     this.DataService.currentBookingRateChartData.subscribe(
       data => {
         var res: any = data;

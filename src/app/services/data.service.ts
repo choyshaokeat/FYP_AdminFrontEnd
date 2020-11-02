@@ -75,14 +75,14 @@ export class DataService {
   async syncData(module) {
     return new Promise<any>(async (resolve, reject) => {
       try {
-        if (module == "info") {
+        if (module === "info") {
           var data = await this.API.getAdminInfo(this.publicAuth);
           //console.log(data);
           this.updateAdminInfo(await this.EncrDecrService.encryptObject('admin', data[0]));
           this.updateActiveBookingHistory(await this.API.getBookingInfo(data = { type: "activeBookingHistory" }));
-        } else if (module = "room") {
+        } else if (module === "room") {
           this.updateAllRoomData(await this.API.getRoomInfo(data = { type: "getAllRoom" }));
-        } else if (module = "chart") {
+        } else if (module === "chart") {
           this.updateBookingRateChartData(await this.API.getChartData(data = { type: "bookingRateChart" }));
           var date = await this.API.getBookingDocument(null);
           var data1 = {
@@ -94,7 +94,7 @@ export class DataService {
             sem2CheckOutDate: moment(date[0].sem2CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
             sem3CheckOutDate: moment(date[0].sem3CheckOutDate).utc().format("YYYY-MM-DD HH:mm:ss"),
           }
-          this.updateSemBookChartData(await this.API.getChartData(data1));
+          await this.updateSemBookChartData(await this.API.getChartData(data1));
           this.updateVillageOccupancyChartData(await this.calculateRoomOccupancy());
         }
         resolve('ok');
@@ -187,9 +187,9 @@ export class DataService {
 
   private semBookChartData = new BehaviorSubject('');
   currentSemBookChartData = this.semBookChartData.asObservable();
-  updateSemBookChartData(value) {
+  async updateSemBookChartData(value) {
     this.semBookChartData.next(value);
-    //console.log(value);
+    console.log(value);
   }
 
   private villageOccupancyChartData = new BehaviorSubject('');

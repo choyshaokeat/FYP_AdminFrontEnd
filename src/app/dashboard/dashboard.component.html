@@ -18,13 +18,14 @@
               </div> -->
               <div class="col-8 pb-2 px-5">
                 <div>
-                  <h4 class="text-primary font-weight-bold mb-4">UPCOMING ROOM REGISTRATION</h4>
+                  {{ bookingDocument[0].bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}
+                  <h4 class="text-primary font-weight-bold mb-4">Upcoming Room Registration</h4>
                   <span class="badge badge-soft-success badge-lg text-sm">
-                    {{ bookingDocument[0].bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}
+                    {{ bookingDocument[0]?.bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}
                   </span>
-                  <span class="mx-2">TO</span>
+                  <span class="mx-2"><i class="fas fa-angle-right"></i></span>
                   <span class="badge badge-soft-danger badge-lg text-sm">
-                    {{ bookingDocument[0].bookingPeriodEnd | date:'dd MMM yyyy, hh:mm a' }}
+                    {{ bookingDocument[0]?.bookingPeriodEnd | date:'dd MMM yyyy, hh:mm a' }}
                   </span>
                 </div>
                 <!-- <h2>{{ bookingDocument[0].bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}</h2>
@@ -49,10 +50,10 @@
                       <table class="table table-borderless align-items-center text-primary">
                         <tbody>
                           <tr *ngFor="let m of bookingData | slice:0:3" class="text-center border-none">
-                            <th scope="row">{{ m.studentID }}</th>
-                            <td>{{ m.roomNumber }}</td>
-                            <td>{{ m.bed }}</td>
-                            <td>{{ m.status }}</td>
+                            <th scope="row">{{ m?.studentID }}</th>
+                            <td>{{ m?.roomNumber }}</td>
+                            <td>{{ m?.bed }}</td>
+                            <td>{{ m?.status }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -77,7 +78,7 @@
         <div class="col-4">
           <div class="card hover-shadow-lg">
             <div class="card-body d-flex align-items-center justify-content-center my-3">
-              <div id="chart">
+              <div id="chart1">
                 <apx-chart [series]="bookingRateChart.series" [chart]="bookingRateChart.chart"
                   [labels]="bookingRateChart.labels" [responsive]="bookingRateChart.responsive"></apx-chart>
               </div>
@@ -90,10 +91,12 @@
         <div class="col-3">
           <div class="card hover-shadow-lg">
             <div class="card-body d-flex align-items-center justify-content-center my-3">
-              <apx-chart [series]="semBookChart.series" [chart]="semBookChart.chart"
+              <div id="chart2">
+                <apx-chart [series]="semBookChart.series" [chart]="semBookChart.chart"
                 [dataLabels]="semBookChart.dataLabels" [plotOptions]="semBookChart.plotOptions"
                 [yaxis]="semBookChart.yaxis" [xaxis]="semBookChart.xaxis" [legend]="semBookChart.legend"
                 [colors]="semBookChart.colors" [grid]="semBookChart.grid"></apx-chart>
+              </div>
             </div>
             <div class="card-footer text-center">
               <h5 class="card-title mb-0">Booking Amount by Semester</h5>
@@ -103,7 +106,7 @@
         <div class="col-5">
           <div class="card hover-shadow-lg">
             <div class="card-body d-flex align-items-center justify-content-center my-3">
-              <div id="chart">
+              <div id="chart3">
                 <apx-chart [series]="villageOccupancyChart.series" [chart]="villageOccupancyChart.chart"
                   [dataLabels]="villageOccupancyChart.dataLabels" [plotOptions]="villageOccupancyChart.plotOptions"
                   [responsive]="villageOccupancyChart.responsive" [xaxis]="villageOccupancyChart.xaxis"
