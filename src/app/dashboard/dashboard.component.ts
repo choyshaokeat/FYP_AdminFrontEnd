@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
   publicAuth: any;
   bookingRateData: any;
   bookingData: any;
-  bookingDocument: any;
+  bookingDocument: any = [];
 
   @ViewChild("chart") chart: ChartComponent;
   public bookingRateChart: Partial<bookingRateChart>;
@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.bookingRateChart = {
-      series: [1],
+      series: [0,0],
       chart: {
         width: 450,
         height: 320,

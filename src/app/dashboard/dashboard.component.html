@@ -18,7 +18,6 @@
               </div> -->
               <div class="col-8 pb-2 px-5">
                 <div>
-                  {{ bookingDocument[0].bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}
                   <h4 class="text-primary font-weight-bold mb-4">Upcoming Room Registration</h4>
                   <span class="badge badge-soft-success badge-lg text-sm">
                     {{ bookingDocument[0]?.bookingPeriodStart | date:'dd MMM yyyy, hh:mm a' }}
@@ -99,7 +98,7 @@
               </div>
             </div>
             <div class="card-footer text-center">
-              <h5 class="card-title mb-0">Booking Amount by Semester</h5>
+              <h5 class="card-title mb-0">Students Booked by Semester</h5>
             </div>
           </div>
         </div>

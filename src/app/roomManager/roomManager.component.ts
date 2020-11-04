@@ -23,6 +23,7 @@ export class RoomManagerComponent implements OnInit {
   villageSelected: any = "";
   genderSelected: any = "";
   capacitySelected: any = "";
+  statusSelected: any = "";
   modalData: any;
   addRoomForm = this.fb.group({
     roomNumber: ['', [
@@ -143,6 +144,7 @@ export class RoomManagerComponent implements OnInit {
       village: this.villageSelected,
       gender: this.genderSelected,
       capacity: this.capacitySelected,
+      status: this.statusSelected
     }
     this.allRoomData = await this.API.getRoomInfo(data);
     //console.log(this.allRoomData);
@@ -158,6 +160,10 @@ export class RoomManagerComponent implements OnInit {
 
   setCapacity(capacity) {
     this.capacitySelected = capacity;
+  }
+
+  setStatus(status) {
+    this.statusSelected = status;
   }
 
   setRadioButtonValue(type, value){

@@ -27,9 +27,22 @@
             </li>
             <li class="list-group-item">
               <h6 class="my-2 text-primary">Filter capacity</h6>
-              <nav class="nav nav-pills nav-pills-icon nav-justified font-weight-bold pb-3">
+              <nav class="nav nav-pills nav-pills-icon nav-justified font-weight-bold pb-2">
                 <a *ngFor="let m of capacity" class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)"
                   role="tab" (click)="setCapacity(m.capacity)" aria-selected="true">{{ m.capacity }} Pax</a>
+              </nav>
+            </li>
+            <li class="list-group-item">
+              <h6 class="my-2 text-primary">Filter status</h6>
+              <nav class="nav nav-pills nav-pills-icon nav-justified font-weight-bold pb-3">
+                <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
+                  (click)="setStatus(0)" aria-selected="true">Avail</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
+                  (click)="setStatus(1)" aria-selected="true">Occupied</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
+                  (click)="setStatus(2)" aria-selected="true">Reno</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
+                  (click)="setStatus(2)" aria-selected="true">Unavail</a>
               </nav>
             </li>
           </ul>
@@ -185,7 +198,7 @@
               </div>
             </div>
             <div class="col-sm-7">
-              <label class="form-control-label text-white">Gender</label>
+              <label class="form-control-label text-white">Gender Allowed</label>
               <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
                 <label class="btn btn-secondary active" (click)="setRadioButtonValue('gender', 'Male')">
                   <input type="radio" autocomplete="off" value="Male" formControlName="gender" checked> Male
@@ -322,7 +335,7 @@
               </div>
             </div>
             <div class="col-sm-7">
-              <label class="form-control-label text-white">Gender</label>
+              <label class="form-control-label text-white">Gender Allowed</label>
               <div class="form-group btn-group btn-group-toggle btn-block" data-toggle="buttons">
                 <label class="btn btn-secondary" (click)="editRadioButtonValue('gender', 'Male')" [ngClass]="{'active': editRoomForm.value.gender == 'Male'}">
                   <input type="radio" autocomplete="off" value="Male" formControlName="gender"> Male
