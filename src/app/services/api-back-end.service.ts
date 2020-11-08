@@ -70,4 +70,9 @@ export class ApiBackEndService {
   getChartData(data) {
     return this.http.post(`${this.getBackEndURL()}/admin/getChartData`, { data }, httpOptions);
   }
+
+  //Email
+  sendEmail(data) {
+    return this.http.post(`${this.getBackEndURL()}/agent/mail`, { data }, httpOptions);
+  }
 }

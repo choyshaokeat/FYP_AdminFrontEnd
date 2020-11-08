@@ -231,6 +231,8 @@ export class RoomAssignationComponent implements OnInit {
       }
       //console.log(data3);
       await this.API.updateBookingInfo(data3);
+
+      await this.sendEmail(date);
       this.DataService.callAll();
 
       $('#bookSucessfully').modal('show');
@@ -253,6 +255,24 @@ export class RoomAssignationComponent implements OnInit {
     this.showBookingDetails = false;
     this.priceForm.reset();
     this.selectedRoom = null;
+  }
+
+  async sendEmail(date) {
+    var data = {
+      type: "bookingConfirmation",
+      receiver: this.studentInfo[0].studentEmail,
+      subject: "Roomy Booking Confirmation",
+      studentName: this.studentInfo[0].studentName,
+      studentID: this.studentInfo[0].studentID,
+      roomNumber: this.selectedRoom.roomNumber,
+      bed: this.selectedRoom.bed,
+      aircond: this.selectedRoom.aircond,
+      numberOfSemester: this.numberOfSemester,
+      fees: this.priceForm.value.accommodationPrice,
+      expectedCheckInDate: moment(date[0]).format("YYYY-MM-DD"),
+      expectedCheckOutDate: moment(date[1]).format("YYYY-MM-DD"),
+    }
+    await this.API.sendEmail(data);
   }
 
   async searchStudent() {

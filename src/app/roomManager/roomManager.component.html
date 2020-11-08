@@ -42,13 +42,13 @@
                 <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
                   (click)="setStatus(2)" aria-selected="true">Reno</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="javascript:void(0)" role="tab"
-                  (click)="setStatus(2)" aria-selected="true">Unavail</a>
+                  (click)="setStatus(3)" aria-selected="true">Unavail</a>
               </nav>
             </li>
           </ul>
           <div class="card-footer px-0 py-0 border-0 overflow-hidden">
             <button class="btn btn-block btn-primary rounded-0" (click)="getRoomData()"
-              [disabled]="villageSelected.length == 0 || capacitySelected.length == 0 || genderSelected.length == 0">Filter</button>
+              [disabled]="villageSelected.length == 0 || capacitySelected.length == 0 || genderSelected.length == 0 || statusSelected.length == 0">Filter</button>
           </div>
         </div>
         <button type="button" class="btn btn-success btn-block" (click)="modalEvent('addRoomModal')">

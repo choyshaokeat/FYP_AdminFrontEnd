@@ -9,7 +9,6 @@ export class EncrDecrService {
 
   p_key = {
     login: 'key_login.bbb',
-    client: 'key_client.bbb',
     admin: 'key_admin.bbb',
     mail: 'key_mail.bbb'
   }
@@ -20,7 +19,6 @@ export class EncrDecrService {
     try {
       var key = '';
       if (type == 'login') key = this.p_key.login;
-      else if (type == 'client') key = this.p_key.client;
       else if (type == 'admin') key = this.p_key.admin;
       else if (type == 'mail') key = this.p_key.mail;
 
@@ -39,11 +37,8 @@ export class EncrDecrService {
     try {
       var key = '';
       if (type == 'login') key = this.p_key.login;
-      else if (type == 'client') key = this.p_key.client;
       else if (type == 'admin') key = this.p_key.admin;
       else if (type == 'mail') key = this.p_key.mail;
-      else if (type == 'test') {key = this.p_key.admin;
-      console.log(value)}
 
       var reb64 = CryptoJS.enc.Hex.parse(value);
       var bytes = reb64.toString(CryptoJS.enc.Base64);
